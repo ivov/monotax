@@ -3,9 +3,8 @@ const path = require("path");
 const pdfParse = require("pdf-parse");
 
 class Parser {
-  static async readInvoices() {
+  static async processInvoices() {
     const filenames = await this.getFilenames();
-
     filenames.forEach(filename => this.parseIntoInvoice(filename));
   }
 
@@ -21,6 +20,7 @@ class Parser {
   static async parseIntoInvoice(filename: string) {
     const filepath = path.join(process.cwd(), "invoices", filename);
     const pdfText = await this.readFile(filepath);
+
     let raw;
     try {
       raw = this.extractRaw(pdfText);
@@ -29,44 +29,49 @@ class Parser {
     }
 
     let invoiceData: invoiceData = {
-      invoiceNumber: this.parseInvoiceNumber(filename),
-      invoiceDate: this.parseInvoiceDate(raw.invoiceDate),
-      clientName: this.parseClientName(raw.clientName),
-      clientAddress: this.parseClientAddress(raw.clientAddress),
-      clientID: this.parseClientID(raw.clientID),
-      clientVatStatus: raw.clientVatStatus,
-      invoiceAmount: this.parseAmount(raw.invoiceAmount)
+      number: this.parseNumber(filename),
+      date: this.parseDate(raw.date),
+      name: this.parseName(raw.name),
+      address: this.parseAddress(raw.address),
+      ID: this.parseID(raw.ID),
+      vatStatus: raw.vatStatus,
+      amount: this.parseAmount(raw.amount)
     };
+    // console.log(invoiceData);
 
-    console.log(invoiceData);
+    console.log("'" + invoiceData.name + "'" + invoiceData.number);
   }
 
+  /** Returns an object containing the raw strings to be used in `invoiceData`.*/
   static extractRaw(pdfText: string): { [key: string]: string } {
     const regexes = {
-      invoiceDate: /Domicilio:\n(.{10})/,
-      clientNameAndAddress: /\d{11}\n([\w\sñÑ.,()É-]*)\n([\w\s'ñÑ°áéíóúª:.,-/()ã+]*?)(Código|Contado)/,
-      clientID: /(\w*: \d*)\n(Código|Precio Unit\.)/,
-      clientVatStatus: /Monotributo\n([\w\s]*)\nExento/,
-      invoiceAmount: /([\d,]*)\nSubtotal/
+      date: /Domicilio:\n(.{10})/,
+      nameAndAddress: /\d{11}\n([A-Z0-9 ñÑ.,()É\-\n]*)\n([\w\s'ñÑ°áéíóúª:.,\-/()ã+]*?)(Código|Contado)/,
+      ID: /(\w*: \d*)\n(Código|Precio Unit\.)/,
+      vatStatus: /Monotributo\n([\w\s]*)\nExento/,
+      amount: /([\d,]*)\nSubtotal/
     };
+    let rawNameAndAddress = pdfText.match(regexes["nameAndAddress"])!;
 
-    const rawClientNameAndAddress = pdfText.match(
-      regexes["clientNameAndAddress"]
-    );
+    // exceptional: if client name is not capitalized (only 3 out of hundreds)
+    const name = /(Cassandra Gleeson|ONU Mujeres|Valeriy Shcheglov)\n([\w\s'ñÑ°áéíóúª:.,\-/()ã+]*?)(Código|Contado)/;
+    if (name.test(pdfText)) {
+      rawNameAndAddress = pdfText.match(name)!;
+    }
 
     return {
-      invoiceDate: pdfText.match(regexes["invoiceDate"])![1],
-      clientName: rawClientNameAndAddress![1],
-      clientAddress: rawClientNameAndAddress![2].replace("\n", " ") || "",
-      clientID: pdfText.match(regexes["clientID"])![1],
-      clientVatStatus: pdfText.match(regexes["clientVatStatus"])![1],
-      invoiceAmount: pdfText.match(regexes["invoiceAmount"])![1]
+      date: pdfText.match(regexes["date"])![1],
+      name: rawNameAndAddress![1].replace("\n", " ").replace("  ", " "),
+      address: rawNameAndAddress![2].replace("\n", " ").trim() || "",
+      ID: pdfText.match(regexes["ID"])![1],
+      vatStatus: pdfText.match(regexes["vatStatus"])![1],
+      amount: pdfText.match(regexes["amount"])![1]
     };
   }
 
-  static parseInvoiceNumber(filename: string): string {
-    const regexForInvoiceNumber = /_0+(\d*).pdf/;
-    return filename.match(regexForInvoiceNumber)![1];
+  static parseNumber(filename: string): string {
+    const regexForNumber = /_0+(\d*).pdf/;
+    return filename.match(regexForNumber)![1];
   }
 
   static async readFile(filepath: string): Promise<string> {
@@ -76,33 +81,37 @@ class Parser {
     return pdfContents.text;
   }
 
-  static parseInvoiceDate(date: string): Date {
+  static parseDate(date: string): Date {
     const parts = date.split("/").map(part => parseInt(part));
     return new Date(parts[2], parts[1] - 1, parts[0]);
   }
 
-  static parseClientName(name: string): string {
-    // correct company name
-    if (name.includes("S.R.L.") || name.includes("S.A.")) return name;
+  static parseName(name: string): string {
+    // correct sloppy company name (specific)
+    if (name.includes("S A I C")) return name.replace("S A I C", "SAIC");
+    if (name.includes("S A C I")) return name.replace("S A C I", "SACI");
 
-    // mistake in company name
+    // correct sloppy company name (generic)
     const wrongAbbreviations: { [key: string]: string } = {
-      "S A": "S.A.",
-      "S.A": "S.A.",
-      "S R L": "S.R.L.",
-      "S.R.L": "S.R.L."
+      "S A": "SA",
+      "S.A.": "SA",
+      "S.A": "SA",
+      "SOCIEDAD ANONIMA": "SA",
+      "S R L": "SRL",
+      "S.R.L": "SRL",
+      "SRL.": "SRL",
+      "SOCIEDAD DE RESPONSABILIDAD LIMITADA": "SRL"
     };
-
     for (let mistake in wrongAbbreviations) {
       if (name.includes(mistake))
         return name.replace(mistake, wrongAbbreviations[mistake]);
     }
 
-    // not a company name
+    // not a company name, leave untouched
     return name;
   }
 
-  static parseClientAddress(address: string) {
+  static parseAddress(address: string) {
     // if no address
     if (address === "")
       return {
@@ -117,7 +126,16 @@ class Parser {
         province: ""
       };
 
-    // if not in Argentina
+    // exceptional: if from Panama
+    if (address.includes("PANAMA")) {
+      const [streetSection, countrySection] = address.split(", ");
+      return {
+        street: streetSection.trim(),
+        province: countrySection.trim()
+      };
+    }
+
+    // exceptional: if from Uruguay
     if (address.includes("Uruguay")) {
       const regexForUruguay = /-(?!.*-)[\s\n]*(\w*)/;
       const countrySection = address.match(regexForUruguay)![1];
@@ -150,7 +168,7 @@ class Parser {
     };
   }
 
-  static parseClientID(ID: string) {
+  static parseID(ID: string) {
     const [type, number] = ID.split(": ");
     return {
       type,
@@ -163,4 +181,4 @@ class Parser {
   }
 }
 
-Parser.readInvoices();
+Parser.processInvoices();

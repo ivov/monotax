@@ -17,13 +17,13 @@ type pdfContents = {
 };
 
 type invoiceData = {
-  invoiceNumber: string;
-  invoiceDate: Date;
-  clientName: string;
-  clientAddress: clientAddress;
-  clientID: { type: string; number: string };
-  clientVatStatus: string;
-  invoiceAmount: number;
+  date: Date;
+  number: string;
+  name: string;
+  address: clientAddress;
+  ID: { type: string; number: string };
+  vatStatus: string;
+  amount: number;
 };
 
 type clientAddress = {
