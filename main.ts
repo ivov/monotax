@@ -44,7 +44,7 @@ class Parser {
   static extractRaw(pdfText: string): { [key: string]: string } {
     const regexes = {
       invoiceDate: /Domicilio:\n(.{10})/,
-      clientNameAndAddress: /\d{11}\n([\w\s.]*)\n([\w\sáéíóú:.,-]*)(Código|Contado)/,
+      clientNameAndAddress: /\d{11}\n([\w\sñÑ.,()É-]*)\n([\w\s'ñÑ°áéíóúª:.,-/()ã+]*?)(Código|Contado)/,
       clientID: /(\w*: \d*)\n(Código|Precio Unit\.)/,
       clientVatStatus: /Monotributo\n([\w\s]*)\nExento/,
       invoiceAmount: /([\d,]*)\nSubtotal/
@@ -103,11 +103,29 @@ class Parser {
   }
 
   static parseClientAddress(address: string) {
+    // if no address
     if (address === "")
       return {
         street: "",
         province: ""
       };
+
+    // if no province section
+    if (!address.includes(","))
+      return {
+        street: address,
+        province: ""
+      };
+
+    // if not in Argentina
+    if (address.includes("Uruguay")) {
+      const regexForUruguay = /-(?!.*-)[\s\n]*(\w*)/;
+      const countrySection = address.match(regexForUruguay)![1];
+      return {
+        street: address.replace("- " + countrySection, "").trim(),
+        province: countrySection.trim()
+      };
+    }
 
     // if province name is to be corrected
     const cleanPlacenames: { [key: string]: string } = {
