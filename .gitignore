@@ -1,3 +1,4 @@
-/invoices
 /node_modules
 /build
+/invoices/*
+/data/*

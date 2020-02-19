@@ -35,13 +35,13 @@ export default class InvoiceParser {
     }
 
     return {
-      number: this.parseNumber(filename),
-      date: this.parseDate(raw.date),
-      name: this.parseName(raw.name),
-      address: this.parseAddress(raw.address),
-      ID: this.parseID(raw.ID),
-      vatStatus: raw.vatStatus,
-      amount: this.parseAmount(raw.amount)
+      invoiceNumber: this.parseNumber(filename),
+      invoiceDate: this.parseDate(raw.date),
+      clientName: this.parseName(raw.name),
+      clientAddress: this.parseAddress(raw.address),
+      clientId: this.parseId(raw.id),
+      clientVatStatus: raw.vatStatus,
+      invoiceAmount: this.parseAmount(raw.amount)
     };
   }
 
@@ -57,7 +57,7 @@ export default class InvoiceParser {
     const regexes = {
       date: /Domicilio:\n(.{10})/,
       nameAndAddress: /\d{11}\n([A-Z0-9 ñÑ.,()É\-\n]*)\n([\w\s'ñÑ°áéíóúª:.,\-/()ã+]*?)(Código|Contado)/,
-      ID: /(\w*: \d*)\n(Código|Precio Unit\.)/,
+      id: /(\w*: \d*)\n(Código|Precio Unit\.)/,
       vatStatus: /Monotributo\n([\w\s]*)\nExento/,
       amount: /([\d,]*)\nSubtotal/
     };
@@ -73,15 +73,15 @@ export default class InvoiceParser {
       date: invoiceText.match(regexes["date"])![1],
       name: rawNameAndAddress![1].replace("\n", " ").replace("  ", " "),
       address: rawNameAndAddress![2].replace("\n", " ").trim() || "",
-      ID: invoiceText.match(regexes["ID"])![1],
+      id: invoiceText.match(regexes["id"])![1],
       vatStatus: invoiceText.match(regexes["vatStatus"])![1],
       amount: invoiceText.match(regexes["amount"])![1]
     };
   }
 
-  static parseNumber(filename: string): string {
+  static parseNumber(filename: string): number {
     const regexForNumber = /_0+(\d*).pdf/;
-    return filename.match(regexForNumber)![1];
+    return parseInt(filename.match(regexForNumber)![1]);
   }
 
   static parseDate(date: string): Date {
@@ -171,11 +171,11 @@ export default class InvoiceParser {
     };
   }
 
-  static parseID(ID: string) {
-    const [type, number] = ID.split(": ");
+  static parseId(id: string) {
+    const [idType, idNumber] = id.split(": ");
     return {
-      type,
-      number
+      idType,
+      idNumber
     };
   }
 

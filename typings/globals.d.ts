@@ -17,11 +17,11 @@ type PdfContents = {
 };
 
 type InvoiceData = {
-  date: Date;
-  number: string;
-  name: string;
-  address: { street: string; province: string };
-  ID: { type: string; number: string };
-  vatStatus: string;
-  amount: number;
+  invoiceNumber: number;
+  invoiceDate: Date;
+  clientName: string;
+  clientAddress: { street: string; province: string };
+  clientId: { idType: string; idNumber: string };
+  clientVatStatus: string;
+  invoiceAmount: number;
 };
