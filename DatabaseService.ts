@@ -6,6 +6,7 @@ import betterSqlite3 = require("better-sqlite3"); // `import` to enable intellis
  * - most_invoiced_clients
  * - invoice_amount_per_year
  * - invoice_amount_per_month
+ * - invoice_amount_per_day
  */
 export default class DatabaseService {
   static dbpath = path.join(process.cwd(), "data", "invoices.db");
@@ -50,11 +51,9 @@ export default class DatabaseService {
       invoiceAmount
     } = invoice;
 
-    const rawMonth = (invoiceDate.getMonth() + 1).toString();
-
-    const year = invoiceDate.getFullYear().toString();
-    const month = rawMonth.length < 2 ? "0" + rawMonth : rawMonth;
-    const day = invoiceDate.getDate().toString();
+    const { year, month, day } = DatabaseService.getYearMonthAndDay(
+      invoiceDate
+    );
 
     insertionStatement.run(
       invoiceNumber,
@@ -63,11 +62,22 @@ export default class DatabaseService {
       day,
       clientName,
       street === "" ? null : street,
-      province === "" ? null : street,
+      province === "" ? null : province,
       idType,
       idNumber,
       clientVatStatus,
       invoiceAmount
     );
+  }
+
+  static getYearMonthAndDay(invoiceDate: Date) {
+    const rawMonth = (invoiceDate.getMonth() + 1).toString();
+    const rawDay = invoiceDate.getDate().toString();
+
+    const year = invoiceDate.getFullYear().toString();
+    const month = rawMonth.length < 2 ? "0" + rawMonth : rawMonth;
+    const day = rawDay.length < 2 ? "0" + rawDay : rawDay;
+
+    return { year, month, day };
   }
 }
