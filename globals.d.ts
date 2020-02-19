@@ -1,4 +1,4 @@
-type pdfContents = {
+type PdfContents = {
   numpages: number;
   numrender: number;
   info: {
@@ -16,17 +16,12 @@ type pdfContents = {
   version: string;
 };
 
-type invoiceData = {
+type InvoiceData = {
   date: Date;
   number: string;
   name: string;
-  address: clientAddress;
+  address: { street: string; province: string };
   ID: { type: string; number: string };
   vatStatus: string;
   amount: number;
-};
-
-type clientAddress = {
-  street: string;
-  province: string;
 };
