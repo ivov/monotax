@@ -102,7 +102,7 @@ export default class InvoiceParser {
       "SOCIEDAD ANONIMA": "SA",
       "S R L": "SRL",
       "S.R.L": "SRL",
-      "SRL.": "SRL",
+      "SRL.": "SRL", // TODO: db records still show "SRL.
       "SOCIEDAD DE RESPONSABILIDAD LIMITADA": "SRL"
     };
     for (let mistake in wrongAbbreviations) {
@@ -134,24 +134,35 @@ export default class InvoiceParser {
       const [streetSection, countrySection] = address.split(", ");
       return {
         street: streetSection.trim(),
-        province: countrySection.trim()
+        province:
+          "Exterior - " +
+          countrySection.charAt(0).toUpperCase() +
+          countrySection.slice(1, 5).toLowerCase() +
+          "á"
       };
     }
 
     // exceptional: if from Uruguay
-    if (address.includes("Uruguay")) {
+    if (address.includes("Montevideo - Uruguay")) {
       const regexForUruguay = /-(?!.*-)[\s\n]*(\w*)/;
       const countrySection = address.match(regexForUruguay)![1];
       return {
         street: address.replace("- " + countrySection, "").trim(),
-        province: countrySection.trim()
+        province: "Exterior - " + countrySection.trim()
       };
     }
 
     // if province name is to be corrected
     const cleanPlacenames: { [key: string]: string } = {
       "Ciudad de Buenos Aires": "Ciudad Autónoma de Buenos Aires",
-      "Buenos Aires": "Provincia de Buenos Aires"
+      CABA: "Ciudad Autónoma de Buenos Aires",
+      Capital: "Ciudad Autónoma de Buenos Aires",
+      "CABA (1424)": "Ciudad Autónoma de Buenos Aires",
+      "Buenos Aires": "Provincia de Buenos Aires",
+      PBA: "Provincia de Buenos Aires",
+      "Florencio Varela (1888)": "Provincia de Buenos Aires",
+      "Patiño, Formosa": "Formosa",
+      Funes: "Santa Fe"
     };
 
     for (let name in cleanPlacenames) {

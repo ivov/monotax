@@ -7,6 +7,8 @@ import betterSqlite3 = require("better-sqlite3"); // `import` to enable intellis
  * - invoice_amount_per_year
  * - invoice_amount_per_month
  * - invoice_amount_per_day
+ * - number_of_invoices_per_year
+ * - most_invoiced_provinces
  */
 export default class DatabaseService {
   static dbpath = path.join(process.cwd(), "data", "invoices.db");
