@@ -23,6 +23,36 @@ CREATE TABLE IF NOT EXISTS "usd_ars_xrate" (
 	"blue_buy_rate"	REAL,
 	"blue_sell_rate"	REAL
 );
+CREATE VIEW most_invoiced_clients AS
+SELECT
+	client_name,
+	ROUND(SUM(i.invoice_ars_amount / mx.mon_avg_sell_rate_official_then_blue), 2) AS usd_amount
+FROM
+	invoices i
+JOIN
+	monthly_average_xrates mx
+ON
+	i.invoice_year = mx.xrate_year AND 
+	i.invoice_month = mx.xrate_month
+GROUP BY
+	i.client_name
+ORDER BY
+	usd_amount DESC;
+CREATE VIEW most_invoiced_provinces AS
+SELECT
+	client_province,
+	ROUND(SUM(i.invoice_ars_amount / mx.mon_avg_sell_rate_official_then_blue), 2) AS usd_amount
+FROM
+	invoices i
+JOIN
+	monthly_average_xrates mx
+ON
+	i.invoice_year = mx.xrate_year AND 
+	i.invoice_month = mx.xrate_month
+GROUP BY
+	i.client_province
+ORDER BY
+	usd_amount DESC;
 CREATE VIEW invoiced_in_current_fiscal_period AS
 SELECT 
 	sum(ars_amount) AS 'invoiced_in_current_fiscal_period'
@@ -42,26 +72,6 @@ WHERE
 	ELSE
 		invoice_year = (SELECT strftime('%Y', date('now')))
 	END;
-CREATE VIEW most_invoiced_provinces AS
-SELECT
-	client_province,
-	SUM(invoice_ars_amount) AS invoices_per_province
-FROM
-	invoices
-GROUP BY
-	client_province
-ORDER BY
-	invoices_per_province DESC;
-CREATE VIEW most_invoiced_clients AS
-SELECT
-	COUNT(client_name) AS invoices_per_client,
-	client_name
-FROM
-	invoices
-GROUP BY
-	client_name
-ORDER BY
-	invoices_per_client DESC;
 CREATE VIEW average_invoiced_per_month AS
 SELECT
 	invoice_month,
