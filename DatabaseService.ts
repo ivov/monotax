@@ -1,17 +1,8 @@
 const path = require("path");
 import betterSqlite3 = require("better-sqlite3"); // `import` to enable intellisense
 
-/**
- * Available views:
- * - most_invoiced_clients
- * - invoice_amount_per_year
- * - invoice_amount_per_month
- * - invoice_amount_per_day
- * - number_of_invoices_per_year
- * - most_invoiced_provinces
- */
 export default class DatabaseService {
-  static dbpath = path.join(process.cwd(), "data", "invoices.db");
+  static dbpath = path.join(process.cwd(), "db", "monotax.db");
   static db = new betterSqlite3(DatabaseService.dbpath);
 
   static readAllInvoices() {
@@ -26,7 +17,7 @@ export default class DatabaseService {
 
   static insert(invoice: InvoiceData): void {
     const insertionStatement = DatabaseService.db.prepare(`
-      INSERT INTO
+      INSERT OR IGNORE INTO
         invoices (
           invoice_number,
           invoice_year,
@@ -38,7 +29,7 @@ export default class DatabaseService {
           client_id_type,
           client_id_number,
           client_vat_status,
-          invoice_amount
+          invoice_ars_amount
         )
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `);

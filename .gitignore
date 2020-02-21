@@ -1,4 +1,4 @@
 /node_modules
 /build
-/invoices/*
-/data/*
+/invoices/*.pdf
+/db/*.db
