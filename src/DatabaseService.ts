@@ -2,7 +2,7 @@ const path = require("path");
 import betterSqlite3 = require("better-sqlite3"); // `import` to enable intellisense
 
 export default class DatabaseService {
-  static dbpath = path.join(process.cwd(), "db", "monotax.db");
+  static dbpath = path.join(process.cwd(), "data", "sql", "monotax.db");
   static db = new betterSqlite3(DatabaseService.dbpath);
 
   static readAllInvoices() {

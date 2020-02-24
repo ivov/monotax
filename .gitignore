@@ -1,4 +1,5 @@
-/node_modules
-/build
-/invoices/*.pdf
-/db/*.db
+node_modules
+build
+data/pdf
+data/sql/*
+!data/sql/monotax_schema.sql

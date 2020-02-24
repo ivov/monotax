@@ -46,7 +46,7 @@ export default class InvoiceParser {
   }
 
   static async getInvoiceText(filename: string): Promise<string> {
-    const filepath = path.join(process.cwd(), "invoices", filename);
+    const filepath = path.join(process.cwd(), "data", "pdf", filename);
     const buffer = fs.readFileSync(filepath);
     let pdfContents: PdfContents = await pdfParse(buffer, { max: 1 }); // `max: 1` for first page only
     return pdfContents.text;
