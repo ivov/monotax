@@ -9,10 +9,10 @@ export default class InvoiceParser {
    * ```
       {
         date: "Mon Jul 17 2017 00:00:00 GMT-0300 (Argentina Standard Time)";
-        number: "208";
+        id: "208";
         name: "JOHN MALKOVICH";
         address: { street: "Av. ABC 123"; province: "Córdoba" };
-        ID: { type: "DNI"; number: "14581331" };
+        client_id: { type: "DNI"; number: "14581331" };
         vatStatus: "IVA Responsable Inscripto";
         amount: 123456.78;
       }
@@ -35,11 +35,11 @@ export default class InvoiceParser {
     }
 
     return {
-      invoiceNumber: this.parseNumber(filename),
+      id: this.parseInvoiceId(filename),
       invoiceDate: this.parseDate(raw.date),
       clientName: this.parseName(raw.name),
       clientAddress: this.parseAddress(raw.address),
-      clientId: this.parseId(raw.id),
+      clientId: this.parseClientId(raw.id),
       clientVatStatus: raw.vatStatus,
       invoiceAmount: this.parseAmount(raw.amount)
     };
@@ -79,7 +79,7 @@ export default class InvoiceParser {
     };
   }
 
-  static parseNumber(filename: string): number {
+  static parseInvoiceId(filename: string): number {
     const regexForNumber = /_0+(\d*).pdf/;
     return parseInt(filename.match(regexForNumber)![1]);
   }
@@ -182,7 +182,7 @@ export default class InvoiceParser {
     };
   }
 
-  static parseId(id: string) {
+  static parseClientId(id: string) {
     const [idType, idNumber] = id.split(": ");
     return {
       idType,

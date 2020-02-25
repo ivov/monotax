@@ -1,25 +1,35 @@
-const path = require("path");
+import path from "path";
 import betterSqlite3 = require("better-sqlite3"); // `import` to enable intellisense
 
 export default class DatabaseService {
   static dbpath = path.join(process.cwd(), "data", "sql", "monotax.db");
-  static db = new betterSqlite3(DatabaseService.dbpath);
+  static db = new betterSqlite3(DatabaseService.dbpath, {
+    verbose: console.log
+  });
 
-  static getAllInvoices() {
-    return DatabaseService.db.prepare("SELECT * FROM invoices").all();
+  static getAllInvoices(
+    offset: string,
+    limit: string,
+    field: string,
+    order: string
+  ) {
+    const getAllStatement = DatabaseService.db.prepare(
+      `SELECT * FROM invoices ORDER BY ${field} ${order} LIMIT ${limit} OFFSET ${offset}`
+    );
+    return getAllStatement.all();
   }
 
   static getInvoice(number: number) {
     return DatabaseService.db
-      .prepare("SELECT * FROM invoices WHERE invoice_number = ?")
+      .prepare("SELECT * FROM invoices WHERE id = ?")
       .get(number.toString());
   }
 
   static insert(invoice: InvoiceData): void {
     const insertionStatement = DatabaseService.db.prepare(`
       INSERT OR IGNORE INTO
-        invoices (
-          invoice_number,
+        invoices2 (
+          id,
           invoice_year,
           invoice_month,
           invoice_day,
@@ -35,7 +45,7 @@ export default class DatabaseService {
     `);
 
     const {
-      invoiceNumber,
+      id,
       invoiceDate,
       clientName,
       clientAddress: { street, province },
@@ -49,7 +59,7 @@ export default class DatabaseService {
     );
 
     insertionStatement.run(
-      invoiceNumber,
+      id,
       year,
       month,
       day,

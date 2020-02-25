@@ -3,12 +3,8 @@ import cors from "cors";
 import invoiceRouter from "./routes/invoiceRoute";
 
 const app = express();
-// const corsOptions = {
-//   exposedHeaders: "Access-Control-Expose-Headers: Content-Range"
-// };
 
 app.use(cors());
-// app.options("*", cors());
 
 app.use("/api/invoices", invoiceRouter);
 

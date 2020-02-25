@@ -17,7 +17,7 @@ type PdfContents = {
 };
 
 type InvoiceData = {
-  invoiceNumber: number;
+  id: number;
   invoiceDate: Date;
   clientName: string;
   clientAddress: { street: string; province: string };

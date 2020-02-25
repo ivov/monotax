@@ -4,3 +4,4 @@ data/pdf
 data/sql/*
 !data/sql/monotax_schema.sql
 package-lock.json
+data/*.xlsx

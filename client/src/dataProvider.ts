@@ -20,21 +20,24 @@ const httpClient = fetchUtils.fetchJson;
 
 export default {
   getList: (resource: string, params: GetListParams) => {
-    const { page, perPage } = params.pagination;
-    const { field, order } = params.sort;
+    const { page, perPage } = params.pagination; // from react-admin
+    const { field, order } = params.sort; // from react-admin
+
     const query = {
-      sort: JSON.stringify([field, order]),
-      range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
-      filter: JSON.stringify(params.filter)
+      filter: JSON.stringify(params.filter),
+      offset: JSON.stringify((page - 1) * perPage),
+      limit: JSON.stringify(perPage),
+      sort: JSON.stringify([field, order])
     };
     const url = `${apiUrl}/${resource}?${stringify(query)}`;
-    fetch(url).then((obj: any) => console.log(obj));
 
-    return httpClient(url).then((response: any) => {
+    // e.g. http://localhost:5000/api/invoices?filter={}&range=[0,9]&sort=["id","ASC"]
+
+    return httpClient(url).then(({ json, headers }: any) => {
       return {
-        data: response.json,
+        data: json,
         total: parseInt(
-          response.headers // TODO: response.headers is empty!
+          headers
             .get("Content-Range")
             .split("/")
             .pop(),
