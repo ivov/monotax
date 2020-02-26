@@ -1,5 +1,6 @@
 import path from "path";
 import betterSqlite3 = require("better-sqlite3"); // `import` to enable intellisense
+import { extractYearMonthAndDay } from "./utils";
 
 export default class DatabaseService {
   static dbpath = path.join(process.cwd(), "data", "sql", "monotax.db");
@@ -7,63 +8,16 @@ export default class DatabaseService {
     verbose: console.log
   });
 
-  static getAllInvoices(
+  static getAllRecords(
+    table: string,
     offset: string,
     limit: string,
     field: string,
     order: string
   ) {
     const getAllStatement = DatabaseService.db.prepare(
-      `SELECT *, (client_id_type || " " || client_id_number) AS tax_id FROM invoices
+      `SELECT * FROM ${table}
       ORDER BY ${field} ${order} LIMIT ${limit} OFFSET ${offset}`
-    );
-    return getAllStatement.all();
-  }
-
-  static getAllEarnings(
-    offset: string,
-    limit: string,
-    field: string,
-    order: string
-  ) {
-    const getAllStatement = DatabaseService.db.prepare(
-      `SELECT * FROM earned_amounts_in_ars_and_usd ORDER BY ${field} ${order} LIMIT ${limit} OFFSET ${offset}`
-    );
-    return getAllStatement.all();
-  }
-
-  static getAllSavings(
-    offset: string,
-    limit: string,
-    field: string,
-    order: string
-  ) {
-    const getAllStatement = DatabaseService.db.prepare(
-      `SELECT * FROM savings_per_month_and_year ORDER BY ${field} ${order} LIMIT ${limit} OFFSET ${offset}`
-    );
-    return getAllStatement.all();
-  }
-
-  static getAllExpenses(
-    offset: string,
-    limit: string,
-    field: string,
-    order: string
-  ) {
-    const getAllStatement = DatabaseService.db.prepare(
-      `SELECT * FROM expense_amounts_in_ars_and_usd ORDER BY ${field} ${order} LIMIT ${limit} OFFSET ${offset}`
-    );
-    return getAllStatement.all();
-  }
-
-  static getAllAdwords(
-    offset: string,
-    limit: string,
-    field: string,
-    order: string
-  ) {
-    const getAllStatement = DatabaseService.db.prepare(
-      `SELECT * FROM adwords_amounts_in_ars_and_usd ORDER BY ${field} ${order} LIMIT ${limit} OFFSET ${offset}`
     );
     return getAllStatement.all();
   }
@@ -73,12 +27,6 @@ export default class DatabaseService {
       `SELECT COUNT(*) AS count FROM ${table}`
     );
     return countStatement.get().count;
-  }
-
-  static getInvoice(number: number) {
-    return DatabaseService.db
-      .prepare("SELECT * FROM invoices WHERE id = ?")
-      .get(number.toString());
   }
 
   static insert(invoice: InvoiceData): void {
@@ -110,9 +58,7 @@ export default class DatabaseService {
       invoiceAmount
     } = invoice;
 
-    const { year, month, day } = DatabaseService.getYearMonthAndDay(
-      invoiceDate
-    );
+    const { year, month, day } = extractYearMonthAndDay(invoiceDate);
 
     insertionStatement.run(
       id,
@@ -127,16 +73,5 @@ export default class DatabaseService {
       clientVatStatus,
       invoiceAmount
     );
-  }
-
-  static getYearMonthAndDay(invoiceDate: Date) {
-    const rawMonth = (invoiceDate.getMonth() + 1).toString();
-    const rawDay = invoiceDate.getDate().toString();
-
-    const year = invoiceDate.getFullYear().toString();
-    const month = rawMonth.length < 2 ? "0" + rawMonth : rawMonth;
-    const day = rawDay.length < 2 ? "0" + rawDay : rawDay;
-
-    return { year, month, day };
   }
 }
