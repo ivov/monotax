@@ -14,9 +14,53 @@ export default class DatabaseService {
     order: string
   ) {
     const getAllStatement = DatabaseService.db.prepare(
-      `SELECT * FROM invoices ORDER BY ${field} ${order} LIMIT ${limit} OFFSET ${offset}`
+      `SELECT *, (client_id_type || " " || client_id_number) AS tax_id FROM invoices
+      ORDER BY ${field} ${order} LIMIT ${limit} OFFSET ${offset}`
     );
     return getAllStatement.all();
+  }
+
+  static getAllEarnings(
+    offset: string,
+    limit: string,
+    field: string,
+    order: string
+  ) {
+    const getAllStatement = DatabaseService.db.prepare(
+      `SELECT * FROM earned_amounts_in_ars_and_usd ORDER BY ${field} ${order} LIMIT ${limit} OFFSET ${offset}`
+    );
+    return getAllStatement.all();
+  }
+
+  static getAllSavings(
+    offset: string,
+    limit: string,
+    field: string,
+    order: string
+  ) {
+    const getAllStatement = DatabaseService.db.prepare(
+      `SELECT * FROM savings_per_month_and_year ORDER BY ${field} ${order} LIMIT ${limit} OFFSET ${offset}`
+    );
+    return getAllStatement.all();
+  }
+
+  static getAllExpenses(
+    offset: string,
+    limit: string,
+    field: string,
+    order: string
+  ) {
+    const getAllStatement = DatabaseService.db.prepare(
+      `SELECT * FROM expense_amounts_in_ars_and_usd ORDER BY ${field} ${order} LIMIT ${limit} OFFSET ${offset}`
+    );
+    return getAllStatement.all();
+  }
+
+  static getCount(table: string) {
+    const countStatement = DatabaseService.db.prepare(
+      `SELECT COUNT(*) AS count FROM ${table}`
+    );
+    return countStatement.get().count;
   }
 
   static getInvoice(number: number) {
