@@ -4,11 +4,13 @@ import { InvoicesList } from "../InvoicesList";
 import { EarningsList } from "../EarningsList";
 import { ExpensesList } from "../ExpensesList";
 import { SavingsList } from "../SavingsList";
+import { AdwordsList } from "../AdwordsList";
 import dataProvider from "../dataProvider";
 import InvoiceIcon from "@material-ui/icons/Description";
 import EarningsIcon from "@material-ui/icons/AttachMoney";
 import ExpensesIcon from "@material-ui/icons/AccountBalanceWallet";
 import SavingsIcon from "@material-ui/icons/Star";
+import AdwordsIcon from "@material-ui/icons/Brightness5";
 
 const App = () => (
   <Admin dataProvider={dataProvider}>
@@ -16,6 +18,7 @@ const App = () => (
     <Resource name="invoices" list={InvoicesList} icon={InvoiceIcon} />
     <Resource name="expenses" list={ExpensesList} icon={ExpensesIcon} />
     <Resource name="savings" list={SavingsList} icon={SavingsIcon} />
+    <Resource name="adwords" list={AdwordsList} icon={AdwordsIcon} />
   </Admin>
 );
 

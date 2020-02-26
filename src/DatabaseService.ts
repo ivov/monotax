@@ -56,6 +56,18 @@ export default class DatabaseService {
     return getAllStatement.all();
   }
 
+  static getAllAdwords(
+    offset: string,
+    limit: string,
+    field: string,
+    order: string
+  ) {
+    const getAllStatement = DatabaseService.db.prepare(
+      `SELECT * FROM adwords_amounts_in_ars_and_usd ORDER BY ${field} ${order} LIMIT ${limit} OFFSET ${offset}`
+    );
+    return getAllStatement.all();
+  }
+
   static getCount(table: string) {
     const countStatement = DatabaseService.db.prepare(
       `SELECT COUNT(*) AS count FROM ${table}`
