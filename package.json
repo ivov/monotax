@@ -6,7 +6,8 @@
 	"scripts": {
 		"parse": "tsc && node build/parse.js",
 		"server": "nodemon --exec ts-node --files src/server.ts",
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"client": "npm start --prefix client",
+		"both": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\""
 	},
 	"keywords": [],
 	"author": "Iván Ovejero",
@@ -21,6 +22,7 @@
 	},
 	"devDependencies": {
 		"@types/better-sqlite3": "^5.4.0",
-		"@types/node": "^13.7.1"
+		"@types/node": "^13.7.1",
+		"concurrently": "^5.1.0"
 	}
 }
