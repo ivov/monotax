@@ -3,36 +3,36 @@ import betterSqlite3 = require("better-sqlite3"); // `import` to enable intellis
 import { extractYearMonthAndDay } from "./utils";
 
 export default class DatabaseService {
-  static dbpath = path.join(process.cwd(), "data", "sql", "monotax.db");
-  static db = new betterSqlite3(DatabaseService.dbpath, {
-    verbose: console.log
-  });
+	static dbpath = path.join(process.cwd(), "data", "sql", "monotax.db");
+	static db = new betterSqlite3(DatabaseService.dbpath, {
+		// verbose: console.log
+	});
 
-  static getAllRecords(
-    table: string,
-    offset: string,
-    limit: string,
-    field: string,
-    order: string
-  ) {
-    const getAllStatement = DatabaseService.db.prepare(
-      `SELECT * FROM ${table}
+	static getAllRecords(
+		table: string,
+		offset: string,
+		limit: string,
+		field: string,
+		order: string
+	) {
+		const getAllStatement = DatabaseService.db.prepare(
+			`SELECT * FROM ${table}
       ORDER BY ${field} ${order} LIMIT ${limit} OFFSET ${offset}`
-    );
-    return getAllStatement.all();
-  }
+		);
+		return getAllStatement.all();
+	}
 
-  static getCount(table: string) {
-    const countStatement = DatabaseService.db.prepare(
-      `SELECT COUNT(*) AS count FROM ${table}`
-    );
-    return countStatement.get().count;
-  }
+	static getCount(table: string) {
+		const countStatement = DatabaseService.db.prepare(
+			`SELECT COUNT(*) AS count FROM ${table}`
+		);
+		return countStatement.get().count;
+	}
 
-  static insert(invoice: InvoiceData): void {
-    const insertionStatement = DatabaseService.db.prepare(`
+	static insert(invoice: InvoiceData): void {
+		const insertionStatement = DatabaseService.db.prepare(`
       INSERT OR IGNORE INTO
-        invoices2 (
+        invoices (
           id,
           invoice_year,
           invoice_month,
@@ -48,30 +48,30 @@ export default class DatabaseService {
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `);
 
-    const {
-      id,
-      invoiceDate,
-      clientName,
-      clientAddress: { street, province },
-      clientId: { idType, idNumber },
-      clientVatStatus,
-      invoiceAmount
-    } = invoice;
+		const {
+			id,
+			invoiceDate,
+			clientName,
+			clientAddress: { street, province },
+			clientId: { idType, idNumber },
+			clientVatStatus,
+			invoiceAmount
+		} = invoice;
 
-    const { year, month, day } = extractYearMonthAndDay(invoiceDate);
+		const { year, month, day } = extractYearMonthAndDay(invoiceDate);
 
-    insertionStatement.run(
-      id,
-      year,
-      month,
-      day,
-      clientName,
-      street === "" ? null : street,
-      province === "" ? null : province,
-      idType,
-      idNumber,
-      clientVatStatus,
-      invoiceAmount
-    );
-  }
+		insertionStatement.run(
+			id,
+			year,
+			month,
+			day,
+			clientName,
+			street === "" ? null : street,
+			province === "" ? null : province,
+			idType,
+			idNumber,
+			clientVatStatus,
+			invoiceAmount
+		);
+	}
 }

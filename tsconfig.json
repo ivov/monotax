@@ -1,12 +1,12 @@
 {
-  "compilerOptions": {
-    "outDir": "./build",
-    "rootDir": "./src",
-    "target": "es5",
-    "module": "commonjs",
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "esModuleInterop": true
-  },
-  "exclude": ["client"]
+	"compilerOptions": {
+		"strict": true,
+		"outDir": "./build",
+		"rootDir": "./src",
+		"target": "es5",
+		"module": "commonjs",
+		"esModuleInterop": true, // needed for importing "path" module
+		"typeRoots": ["./src/typings"]
+	},
+	"exclude": ["./client"]
 }

@@ -13,8 +13,6 @@ import {
 import { fetchUtils } from "react-admin";
 import { stringify } from "query-string";
 
-// https://marmelab.com/react-admin/DataProviders.html
-
 const apiUrl = "http://localhost:5000/api";
 const httpClient = fetchUtils.fetchJson;
 
@@ -30,8 +28,6 @@ export default {
       sort: JSON.stringify([field, order])
     };
     const url = `${apiUrl}/${resource}?${stringify(query)}`;
-
-    // e.g. http://localhost:5000/api/invoices?filter={}&range=[0,9]&sort=["id","ASC"]
 
     return httpClient(url).then(({ json, headers }: any) => {
       return {
