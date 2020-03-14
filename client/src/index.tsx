@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./styling/index.css";
-import App from "./components/App";
+import MyAdmin from "./myComponents/MyAdmin";
 
-ReactDOM.render(<App />, document.getElementById("root"));
+ReactDOM.render(<MyAdmin />, document.getElementById("root"));

@@ -1,18 +1,10 @@
 import React from "react";
-import { List, Datagrid, TextField, NumberField } from "react-admin";
-import { makeStyles } from "@material-ui/core";
-
-const useStyles = makeStyles({
-	header: {
-		backgroundColor: "yellow"
-	}
-});
+import { Datagrid, TextField, NumberField } from "react-admin";
+import { MyList } from "./MyList";
 
 export const InvoicesList = (props: []) => {
-	// const classes = useStyles();
 	return (
-		<List
-			// className={classes.header}
+		<MyList
 			{...props}
 			sort={{ field: "id", order: "DESC" }}
 			perPage={25}
@@ -36,7 +28,7 @@ export const InvoicesList = (props: []) => {
 					options={{ minimumFractionDigits: 2 }}
 				/>
 			</Datagrid>
-		</List>
+		</MyList>
 	);
 };
 
