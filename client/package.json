@@ -8,7 +8,6 @@
 		"@testing-library/user-event": "^7.2.1",
 		"chartist": "^0.11.4",
 		"query-string": "^6.11.0",
-		"ra-data-json-server": "^3.2.3",
 		"react": "^16.12.0",
 		"react-admin": "^3.2.3",
 		"react-chartist": "^0.14.3",
