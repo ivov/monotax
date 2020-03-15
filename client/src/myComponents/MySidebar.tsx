@@ -1,13 +1,14 @@
 import React from "react";
-import Sidebar from "../components/Sidebar/Sidebar";
+import Sidebar from "../mdr/components/Sidebar/Sidebar";
 import OverviewIcon from "@material-ui/icons/Apps";
 import EarningsIcon from "@material-ui/icons/AddCircle";
 import ExpensesIcon from "@material-ui/icons/RemoveCircle";
 import InvoiceIcon from "@material-ui/icons/Description";
 import SavingsIcon from "@material-ui/icons/Star";
 import AdwordsIcon from "@material-ui/icons/Language";
-import DashboardPage from "views/Dashboard/Dashboard.js";
-import sidebarImage from "assets/img/sidebar-7.jpg";
+import DashboardPage from "../mdr/views/Dashboard/Dashboard";
+import sidebarImage from "mdr/assets/img/sidebar-7.jpg";
+import Overview from "./customRoutes/Overview";
 
 const sidebarProps = {
 	color: "purple",
@@ -17,7 +18,7 @@ const sidebarProps = {
 			path: "/overview",
 			name: "Overview",
 			icon: OverviewIcon,
-			component: DashboardPage,
+			component: Overview,
 			layout: ""
 		},
 		{
@@ -35,16 +36,16 @@ const sidebarProps = {
 			layout: ""
 		},
 		{
-			path: "/invoices",
-			name: "Invoices",
-			icon: InvoiceIcon,
+			path: "/savings",
+			name: "Savings",
+			icon: SavingsIcon,
 			component: DashboardPage,
 			layout: ""
 		},
 		{
-			path: "/savings",
-			name: "Savings",
-			icon: SavingsIcon,
+			path: "/invoices",
+			name: "Invoices",
+			icon: InvoiceIcon,
 			component: DashboardPage,
 			layout: ""
 		},
