@@ -2,7 +2,7 @@
 	"name": "monotax",
 	"version": "1.0.0",
 	"description": "",
-	"main": "index.js",
+	"main": "src/server.ts",
 	"scripts": {
 		"parse": "tsc && node build/parse.js",
 		"server": "nodemon --exec ts-node --files src/server.ts",

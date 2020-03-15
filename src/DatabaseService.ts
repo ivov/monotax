@@ -1,5 +1,5 @@
 import path from "path";
-import betterSqlite3 = require("better-sqlite3"); // `import` to enable intellisense
+import betterSqlite3 = require("better-sqlite3"); // `import X = require(X)` to enable Intellisense
 import { extractYearMonthAndDay } from "./utils";
 
 export default class DatabaseService {

@@ -1,9 +1,9 @@
 import React from "react";
-import { List, Datagrid, TextField, NumberField } from "react-admin";
+import { List, Datagrid, TextField } from "react-admin";
 import MainAreaWrapper from "../utilities/MainAreaWrapper";
 import DecimalNumberField from "myComponents/utilities/DecimalNumberField";
 
-const EarningsList = (props: []) => (
+const EarningsList = (props: any) => (
 	<MainAreaWrapper>
 		<List
 			{...props}

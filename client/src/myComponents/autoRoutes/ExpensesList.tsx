@@ -2,7 +2,7 @@ import React from "react";
 import { List, Datagrid, TextField, NumberField } from "react-admin";
 import MainAreaWrapper from "../utilities/MainAreaWrapper";
 
-const ExpensesList = (props: []) => {
+const ExpensesList = (props: any) => {
 	return (
 		<MainAreaWrapper>
 			<List

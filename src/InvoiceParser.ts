@@ -3,7 +3,7 @@ const path = require("path");
 const pdfParse = require("pdf-parse");
 
 export default class InvoiceParser {
-	/**Receives a PDF filename, extracts raw strings from PDF, parses them and returns an `invoiceData` object:
+	/**Receives a PDF filename, extracts raw strings from PDF and returns an `invoiceData` object:
    *
    *Example:
    * ```
@@ -48,7 +48,8 @@ export default class InvoiceParser {
 	static async getInvoiceText(filename: string): Promise<string> {
 		const filepath = path.join(process.cwd(), "data", "pdf", filename);
 		const buffer = fs.readFileSync(filepath);
-		let pdfContents: PdfContents = await pdfParse(buffer, { max: 1 }); // `max: 1` for first page only
+		let pdfContents: PdfContents = await pdfParse(buffer, { max: 1 });
+		// { `max: 1` } for first page only, since pages 2 and 3 are duplicates
 		return pdfContents.text;
 	}
 

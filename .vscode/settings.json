@@ -3,16 +3,13 @@
 		".gitignore": true,
 		"client/src/serviceWorker.js": true,
 		"client/src/setupTests.js": true,
-		"client/src/custom.d.ts": true,
+		// "client/src/custom.d.ts": true,
 		"node_modules": true,
 		"client/node_modules": true,
 		"client/.gitignore": true,
 		"build": true
 	},
 	"search.exclude": {
-		// "client/src/components": true,
-		// "client/src/assets": true,
-		// "client/src/views": true,
-		// "client/src/variables": true
+		"client/src/mdr": true
 	}
 }
