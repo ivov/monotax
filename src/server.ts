@@ -1,11 +1,11 @@
 import express from "express";
 import cors from "cors";
-import setRoutes from "./routes/setRoutes";
+import setAutoRoutes from "./routes/setAutoRoutes";
 
 const app = express();
 
 app.use(cors());
-setRoutes(app);
+setAutoRoutes(app);
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`App listening on port ${port}`));

@@ -1,7 +1,7 @@
 import express from "express";
 import DatabaseService from "../DatabaseService";
 
-const setRoutes = (app: express.Application) => {
+const setAutoRoutes = (app: express.Application) => {
 	const autoRoutes = ["invoices", "earnings", "expenses", "savings", "adwords"];
 	autoRoutes.forEach(route =>
 		app.get(
@@ -34,7 +34,7 @@ const createAutoRoute = (
 		.json(results);
 };
 
-/* Collection of react-admin views and their corresponding views in monotax.db*/
+/* Collection of react-admin views and their corresponding views in monotax.db */
 const VIEWS: { [key: string]: string } = {
 	invoices: "invoices_with_tax_id",
 	earnings: "earned_amounts_in_ars_and_usd",
@@ -43,4 +43,4 @@ const VIEWS: { [key: string]: string } = {
 	adwords: "adwords_amounts_in_ars_and_usd"
 };
 
-export default setRoutes;
+export default setAutoRoutes;

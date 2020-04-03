@@ -1,4 +1,5 @@
 import React from "react";
+
 import MainAreaWrapper from "../utilities/MainAreaWrapper";
 import GridContainer from "mdr/components/Grid/GridContainer";
 import { MyGridItem } from "myComponents/utilities/MyGridItem";
@@ -9,8 +10,8 @@ type sizes = { [key: string]: { [key: string]: Number } };
 
 const Overview = () => {
 	const sizes: sizes = {
-		three: { xs: 12, sm: 12, md: 4 }, // single item sized for three items per line
-		four: { xs: 12, sm: 6, md: 3 } // single item sized for four items per line
+		three: { xs: 12, sm: 12, md: 4 }, // single item sized for allowing three items per line
+		four: { xs: 12, sm: 6, md: 3 } // single item sized for allowing four items per line
 	};
 	const size = sizes["three"];
 

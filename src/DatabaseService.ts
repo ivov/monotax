@@ -74,4 +74,11 @@ export default class DatabaseService {
 			invoiceAmount
 		);
 	}
+
+	static getMostRecent(table: "earnings" | "expenses" | "savings") {
+		const mostRecentStatement = DatabaseService.db.prepare(
+			`SELECT * AS count FROM ${table}_most_recent_six_months`
+		);
+		return mostRecentStatement.all();
+	}
 }
