@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import MainAreaWrapper from "../utilities/MainAreaWrapper";
 import GridContainer from "mdr/components/Grid/GridContainer";
@@ -15,6 +15,20 @@ const Overview = () => {
 	};
 	const size = sizes["three"];
 
+	const [mostRecentEarnings, setmostRecentEarnings] = useState([]);
+	const [mostRecentExpenses, setmostRecentExpenses] = useState([]);
+	const [mostRecentSavings, setmostRecentSavings] = useState([]);
+
+	useEffect(() => {
+		fetch("/api/most-recent")
+			.then(res => res.json()) // required by fetch, for turning response to json data
+			.then(data => {
+				setmostRecentEarnings(data["mostRecentEarnings"]);
+				setmostRecentExpenses(data["mostRecentExpenses"]);
+				setmostRecentSavings(data["mostRecentSavings"]);
+			});
+	}, []); // empty array as second argument to useEffect to run api call only once at first render
+
 	return (
 		<MainAreaWrapper>
 			<GridContainer>
@@ -23,9 +37,9 @@ const Overview = () => {
 				<MyGridItem name="savings" type="info" size={size} />
 			</GridContainer>
 			<GridContainer>
-				<LineGraph size={size} type="success" />
-				<LineGraph size={size} type="danger" />
-				<LineGraph size={size} type="info" />
+				<LineGraph size={size} type="success" data={mostRecentEarnings} />
+				<LineGraph size={size} type="danger" data={mostRecentExpenses} />
+				<LineGraph size={size} type="info" data={mostRecentSavings} />
 			</GridContainer>
 		</MainAreaWrapper>
 	);

@@ -9,6 +9,7 @@
 		"@types/react-router-dom": "^5.1.3",
 		"chartist": "^0.11.4",
 		"history": "^4.10.1",
+		"http-proxy-middleware": "^1.0.3",
 		"query-string": "^6.11.0",
 		"react": "^16.12.0",
 		"react-admin": "^3.2.3",

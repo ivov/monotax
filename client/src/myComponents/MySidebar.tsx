@@ -6,7 +6,8 @@ import ExpensesIcon from "@material-ui/icons/RemoveCircle";
 import InvoiceIcon from "@material-ui/icons/Description";
 import SavingsIcon from "@material-ui/icons/Star";
 import AdwordsIcon from "@material-ui/icons/Language";
-import DashboardPage from "../mdr/views/Dashboard/Dashboard";
+
+import DashboardPage from "mdr/views/Dashboard/Dashboard";
 import sidebarImage from "mdr/assets/img/sidebar-7.jpg";
 import Overview from "./customRoutes/Overview";
 
@@ -59,8 +60,6 @@ const sidebarProps = {
 	]
 };
 
-const MySidebar = (props: any) => {
-	return <Sidebar {...sidebarProps} />;
-};
+const MySidebar = (props: any) => <Sidebar {...sidebarProps} />;
 
 export default MySidebar;

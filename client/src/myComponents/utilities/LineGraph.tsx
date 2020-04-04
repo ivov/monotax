@@ -1,39 +1,36 @@
 import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import Chartist from "chartist";
+import ChartistGraph from "react-chartist";
+
 import GridItem from "mdr/components/Grid/GridItem";
-import ChartistGraph, { ChartitGraphLineProps } from "react-chartist";
 import Card from "mdr/components/Card/Card";
 import CardHeader from "mdr/components/Card/CardHeader";
 import CardFooter from "mdr/components/Card/CardFooter";
 import styles from "mdr/assets/jss/material-dashboard-react/views/dashboardStyle";
-import { makeStyles } from "@material-ui/core/styles";
-import Chartist from "chartist";
 
-var delays = 80,
-	durations = 500;
+const LineGraph = (props: any) => {
+	const useStyles = makeStyles(styles as any);
+	const classes = useStyles();
+	const { size, type, data: dataArray } = props;
+	const lineGraphData = formatIntoLineGraphData(dataArray);
 
-type chartProps = ChartitGraphLineProps & { animation: { draw: Function } };
-
-const dailySalesChart: chartProps = {
-	type: "Line",
-	data: {
-		labels: ["1", "2", "3", "4", "5", "6"],
-		series: [[12, 17, 7, 17, 23, 38]]
-	},
-	options: {
+	const graphOptions: any = {
 		lineSmooth: Chartist.Interpolation.cardinal({
 			tension: 0
 		}),
-		low: 0,
-		high: 50, // creative tim: we recommend you to set the high as the biggest value + something for a better look
+		low: calculateBottomOfGraph(lineGraphData.series),
+		high: calculateTopOfGraph(lineGraphData.series),
 		chartPadding: {
 			top: 0,
 			right: 0,
 			bottom: 0,
 			left: 0
 		}
-	},
-	animation: {
-		draw: function(data: any) {
+	};
+
+	const graphAnimation: any = {
+		draw: (data: any) => {
 			if (data.type === "line" || data.type === "area") {
 				data.element.animate({
 					d: {
@@ -51,8 +48,8 @@ const dailySalesChart: chartProps = {
 			} else if (data.type === "point") {
 				data.element.animate({
 					opacity: {
-						begin: (data.index + 1) * delays,
-						dur: durations,
+						begin: (data.index + 1) * 80,
+						dur: 500,
 						from: 0,
 						to: 1,
 						easing: "ease"
@@ -60,24 +57,18 @@ const dailySalesChart: chartProps = {
 				});
 			}
 		}
-	}
-};
+	};
 
-const LineGraph = (props: any) => {
-	// const useStyles = makeStyles((theme: Theme) => createStyles({ styles }));
-	const useStyles = makeStyles(styles as any);
-	const classes = useStyles();
-	const { size, type } = props;
 	return (
 		<GridItem {...size}>
 			<Card chart>
 				<CardHeader color={type}>
 					<ChartistGraph
 						className="ct-chart"
-						data={dailySalesChart.data}
+						data={lineGraphData}
 						type="Line"
-						options={dailySalesChart.options}
-						listener={dailySalesChart.animation}
+						options={graphOptions}
+						listener={graphAnimation}
 					/>
 				</CardHeader>
 				<CardFooter chart>
@@ -86,6 +77,30 @@ const LineGraph = (props: any) => {
 			</Card>
 		</GridItem>
 	);
+};
+
+const formatIntoLineGraphData = (dataArray: any) => {
+	let labels = [];
+	let series = [];
+	for (let obj of dataArray) {
+		labels.push(obj["month"].toString());
+		series.push(obj["total"]);
+	}
+	series = [series];
+	return {
+		labels,
+		series
+	};
+};
+
+const calculateTopOfGraph = ([series]: any) => {
+	const MARGIN_ABOVE_HIGHEST_VALUE = 250;
+	return Math.max(...series) + MARGIN_ABOVE_HIGHEST_VALUE;
+};
+
+const calculateBottomOfGraph = ([series]: any) => {
+	const MARGIN_BELOW_LOWEST_VALUE = 250;
+	return Math.max(...series) + MARGIN_BELOW_LOWEST_VALUE;
 };
 
 export default LineGraph;

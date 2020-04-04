@@ -8,7 +8,6 @@ import ExpensesList from "./autoRoutes/ExpensesList";
 import SavingsList from "./autoRoutes/SavingsList";
 import AdwordsList from "./autoRoutes/AdwordsList";
 import customRoutes from "./customRoutes/customRoutes";
-import Overview from "./customRoutes/Overview";
 import dataProvider from "../dataProvider";
 import MyLayout from "./MyLayout";
 import { Redirect } from "react-router-dom";
@@ -22,7 +21,7 @@ const MyAdmin = () => {
 			layout={MyLayout}
 			customRoutes={customRoutes} // sets overview route
 			history={browserHistory} // prevents pound sign (#) in url
-			dashboard={() => <Redirect to="/overview" />} // to make homepage "/" redirect to "/overview"
+			dashboard={() => <Redirect to="/overview" />} // homepage "/" redirects to "/overview"
 		>
 			<Resource name="earnings" list={EarningsList} />
 			<Resource name="invoices" list={InvoicesList} />
