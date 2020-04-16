@@ -15,8 +15,22 @@ const sidebarProps = {
 	image: sidebarImage,
 	routes: [
 		{
-			path: "/overview",
-			name: "Overview",
+			path: "/overview-for-2019",
+			name: "2019 Overview",
+			icon: OverviewIcon,
+			component: Overview,
+			layout: ""
+		},
+		{
+			path: "/overview-for-2018",
+			name: "2018 Overview",
+			icon: OverviewIcon,
+			component: Overview,
+			layout: ""
+		},
+		{
+			path: "/overview-for-2017",
+			name: "2017 Overview",
 			icon: OverviewIcon,
 			component: Overview,
 			layout: ""

@@ -20,7 +20,8 @@ const MyAdmin = () => {
 			layout={MyLayout}
 			customRoutes={customRoutes} // sets overview route
 			history={browserHistory} // prevents pound sign (#) in url
-			dashboard={() => <Redirect to="/overview" />} // homepage "/" redirects to "/overview"
+			dashboard={() => <Redirect to="/overview-for-2019" />}
+			// homepage "/" redirects to "/overview-for-2019"
 		>
 			<Resource name="earnings" list={EarningsList} />
 			<Resource name="invoices" list={InvoicesList} />

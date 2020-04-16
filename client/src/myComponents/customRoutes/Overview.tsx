@@ -10,7 +10,7 @@ import TabbedTable from "myComponents/utilities/TabbedTable";
 import "../../styling/chartist.css";
 import RegularTable from "myComponents/utilities/RegularTable";
 
-const Overview = () => {
+const Overview = (year: string) => {
 	// sizes for X items per line
 	const sizes: { [key: string]: { [key: string]: Number } } = {
 		oneFourth: { xs: 12, sm: 6, md: 3 },
@@ -25,10 +25,15 @@ const Overview = () => {
 	const [expensesForYear, setExpensesForYear] = useState([]);
 	const [savingsForYear, setSavingsForYear] = useState([]);
 	const [invoicedForYear, setInvoicedForYear] = useState([]);
-	const [totalsForYear, setTotalsForYear] = useState([]);
+	const [totalsForYear, setTotalsForYear] = useState({
+		earnings: "0",
+		expenses: "0",
+		savings: "0",
+		invoiced: "0"
+	});
 
 	useEffect(() => {
-		fetch("/api/most-recent")
+		fetch("/api/year/" + year)
 			.then(res => res.json())
 			.then(data => {
 				setEarningsForYear(data["earningsForYear"]);
@@ -39,54 +44,33 @@ const Overview = () => {
 			});
 	}, []); // empty array as second arg to run api call only once at first render
 
-	/* Turns API array into useful object.
-	API array:
-	[ { total: 6978.99, category: "expenses" },
-		​{ total: 12891.95, category: "savings" },
-		{ total: 13948.79, category: "invoiced" },
-		{ total: 19870.94, category: "earnings" } ]
-
-	Useful object:
-		{ earnings: "19,870.94", expenses: "6,978.99", savings: "12,891.95", invoiced: "13,948.79" }
-	*/
-	const objectifyTotals = (
-		array: { category: string; total: string }[]
-	): { [key: string]: string } => {
-		let output: { [key: string]: string } = {};
-		for (let obj of array) {
-			output[obj.category] = obj.total.toLocaleString();
-		}
-		return output;
-	};
-	const totals = objectifyTotals(totalsForYear);
-
 	return (
 		<MainAreaWrapper>
 			<GridContainer>
-				<GridHeader size={sizes["fullWidth"]} title="2019" />
+				<GridHeader size={sizes["fullWidth"]} title={year} />
 				<MyGridItem
 					name="earnings"
 					type="success"
 					size={sizes["oneFourth"]}
-					total={totals["earnings"]}
+					total={totalsForYear["earnings"]}
 				/>
 				<MyGridItem
 					name="expenses"
 					type="danger"
 					size={sizes["oneFourth"]}
-					total={totals["expenses"]}
+					total={totalsForYear["expenses"]}
 				/>
 				<MyGridItem
 					name="savings"
 					type="info"
 					size={sizes["oneFourth"]}
-					total={totals["savings"]}
+					total={totalsForYear["savings"]}
 				/>
 				<MyGridItem
 					name="invoices"
 					type="primary"
 					size={sizes["oneFourth"]}
-					total={totals["invoiced"]}
+					total={totalsForYear["invoiced"]}
 				/>
 			</GridContainer>
 			<GridContainer>
