@@ -1,5 +1,6 @@
 import React from "react";
-import OverviewIcon from "@material-ui/icons/Apps";
+import GlobalIcon from "@material-ui/icons/Apps";
+import OverviewIcon from "@material-ui/icons/Schedule";
 import EarningsIcon from "@material-ui/icons/AddCircle";
 import ExpensesIcon from "@material-ui/icons/RemoveCircle";
 import InvoiceIcon from "@material-ui/icons/Description";

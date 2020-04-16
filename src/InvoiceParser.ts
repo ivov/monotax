@@ -36,12 +36,12 @@ export default class InvoiceParser {
 
 		return {
 			id: this.parseInvoiceId(filename),
-			invoiceDate: this.parseDate(raw.date),
+			date: this.parseDate(raw.date),
 			clientName: this.parseName(raw.name),
 			clientAddress: this.parseAddress(raw.address),
 			clientId: this.parseClientId(raw.id),
 			clientVatStatus: raw.vatStatus,
-			invoiceAmount: this.parseAmount(raw.amount)
+			arsAmount: this.parseAmount(raw.amount)
 		};
 	}
 

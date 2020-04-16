@@ -31,34 +31,34 @@ export default class DatabaseService {
 
 	static insert(invoice: InvoiceData): void {
 		const insertionStatement = DatabaseService.db.prepare(`
-      INSERT OR IGNORE INTO
+      INSERT INTO
         invoices (
           id,
-          invoice_year,
-          invoice_month,
-          invoice_day,
+          year,
+          month,
+          day,
           client_name,
           client_street,
           client_province,
           client_id_type,
           client_id_number,
           client_vat_status,
-          invoice_ars_amount
+          ars_amount
         )
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `);
 
 		const {
 			id,
-			invoiceDate,
+			date,
 			clientName,
 			clientAddress: { street, province },
 			clientId: { idType, idNumber },
 			clientVatStatus,
-			invoiceAmount
+			arsAmount
 		} = invoice;
 
-		const { year, month, day } = extractYearMonthAndDay(invoiceDate);
+		const { year, month, day } = extractYearMonthAndDay(date);
 
 		insertionStatement.run(
 			id,
@@ -71,165 +71,35 @@ export default class DatabaseService {
 			idType,
 			idNumber,
 			clientVatStatus,
-			invoiceAmount
+			arsAmount
 		);
 	}
 
-	static getDataForYear(
-		table: "earnings" | "expenses" | "savings" | "invoiced" | "totals"
+	/***  Returns the twelve values for the category during the year. */
+	static getValueForYear(
+		value: "earnings" | "expenses" | "invoiced" | "savings",
+		year: string
 	) {
-		let statement: betterSqlite3.Statement;
-		if (table === "totals") {
-			statement = DatabaseService.db.prepare(
-				`SELECT * FROM historical_totals_2019`
-			);
-		} else {
-			statement = DatabaseService.db.prepare(
-				`SELECT * FROM historical_${table}_2019`
-			);
-		}
-
-		return statement.all();
-	}
-
-	static getEarningsForYear(year: string) {
 		const statement = DatabaseService.db.prepare(
 			`
-			WITH earned_per_month_and_year_total_with_record AS (
+			WITH ${value}_per_month_and_year_with_record AS (
 				SELECT *,
 				CASE
-					WHEN LENGTH(earnings_year || earnings_month) = 5
-					THEN earnings_year || 0 || earnings_month
-					ELSE earnings_year || earnings_month
+					WHEN LENGTH(year || month) = 5
+					THEN year || 0 || month
+					ELSE year || month
 				END AS record
-				-- record is added to allow ordering
-				FROM earned_per_month_and_year_total
+				FROM ${value}_per_month_and_year
 			)
 
 			SELECT
-				earnings_year AS year, earnings_month AS month, round(total_per_month_in_usd, 2) AS total
+				year, month, round(total, 2) AS total
 			FROM (
 					SELECT *
-					FROM earned_per_month_and_year_total_with_record
-					WHERE earnings_year = ${year}
+					FROM ${value}_per_month_and_year_with_record
+					WHERE year = ${year}
 					ORDER BY record DESC) t
 			ORDER BY t.record ASC
-			`
-		);
-		return statement.all();
-	}
-
-	static getExpensesForYear(year: string) {
-		const statement = DatabaseService.db.prepare(
-			`
-			WITH expenses_per_month_and_year_total_with_record AS (
-				SELECT *,
-				CASE
-					WHEN LENGTH(expense_year || expense_month) = 5
-					THEN expense_year || 0 || expense_month
-					ELSE expense_year || expense_month
-				END AS record
-				-- record is added to allow ordering
-				FROM expense_amounts_in_ars_and_usd
-			)
-
-			SELECT
-				expense_year AS year, expense_month AS month, ROUND(usd_amount, 2) AS total
-			FROM (
-				SELECT *
-				FROM expenses_per_month_and_year_total_with_record
-				WHERE expense_year = ${year}
-				ORDER BY record DESC ) t
-			ORDER BY t.record ASC
-			`
-		);
-		return statement.all();
-	}
-
-	static getSavingsForYear(year: string) {
-		const statement = DatabaseService.db.prepare(
-			`
-			WITH savings_per_month_and_year_total_with_record AS (
-				SELECT *,
-				CASE
-					WHEN LENGTH(year || month) = 5
-					THEN year || 0 || month
-					ELSE year || month
-				END AS record
-				-- record is added to allow ordering
-				FROM savings_per_month_and_year
-			)
-
-			SELECT
-				year, month, ROUND(savings_in_usd, 2) as total
-			FROM (
-				SELECT *
-				FROM savings_per_month_and_year_total_with_record
-				WHERE year = ${year}
-				ORDER BY record DESC) t
-			ORDER BY t.record ASC
-			`
-		);
-		return statement.all();
-	}
-
-	static getInvoicedForYear(year: string) {
-		const statement = DatabaseService.db.prepare(
-			`
-			WITH invoiced_per_month_and_year_total_with_record AS (
-				SELECT *,
-				CASE
-					WHEN LENGTH(year || month) = 5
-					THEN year || 0 || month
-					ELSE year || month
-				END AS record
-				-- record is added to allow ordering
-				FROM invoiced_per_month_and_year
-			)
-
-			SELECT
-				year, month, ROUND(total_per_month_in_usd, 2) as total
-			FROM (
-				SELECT *
-				FROM invoiced_per_month_and_year_total_with_record
-				WHERE year = ${year}
-				ORDER BY record DESC) t
-			ORDER BY t.record ASC
-			`
-		);
-		return statement.all();
-	}
-
-	static getTotalsForYear(year: string) {
-		const statement = DatabaseService.db.prepare(
-			`
-			WITH all_totals AS (
-				SELECT
-					ROUND(SUM(total), 2) as total_earnings,
-					"earnings"
-				FROM
-					historical_earnings_${year}
-				UNION
-				SELECT
-					ROUND(SUM(total), 2) as total_expenses,
-					"expenses"
-				FROM
-					historical_expenses_${year}
-				UNION
-				SELECT
-					ROUND(SUM(total), 2) as total_savings,
-					"savings"
-				FROM
-					historical_savings_${year}
-				UNION
-				SELECT
-					ROUND(SUM(total), 2) as total_invoiced,
-					"invoiced"
-				FROM
-					historical_invoiced_${year}
-				)
-
-				SELECT total_earnings AS total, earnings AS category from all_totals
 			`
 		);
 		return statement.all();

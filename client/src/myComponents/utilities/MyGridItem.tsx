@@ -12,6 +12,8 @@ import SavingsIcon from "@material-ui/icons/Star";
 import { makeStyles } from "@material-ui/core/styles";
 import styles from "mdr/assets/jss/material-dashboard-react/views/dashboardStyle";
 import { SvgIconProps } from "@material-ui/core";
+import Danger from "mdr/components/Typography/Danger";
+import Warning from "mdr/components/Typography/Warning";
 
 const useStyles = makeStyles(styles as any);
 
@@ -33,6 +35,13 @@ const MyGridItem = (props: any) => {
 		name.charAt(0).toUpperCase() + name.slice(1);
 
 	const classes = useStyles();
+	const getAverage = (str: string) => {
+		const avg = parseFloat(str.replace(",", "")) / 12;
+		return avg.toLocaleString();
+		// 	parseInt(str.replace(/\.\d*/, "").replace(",", "")) / 2
+		// .toLocaleString();
+	};
+
 	return (
 		<GridItem {...size}>
 			<Card>
@@ -45,12 +54,9 @@ const MyGridItem = (props: any) => {
 					<h3 className="total">$ {total}</h3>
 				</CardHeader>
 				<CardFooter stats>
-					{/* <div className={classes.stats}>
-						<Danger>
-							<Warning />
-						</Danger>
-						Comparison to previous month goes here
-					</div> */}
+					<div className={classes.stats}>
+						Average: <b>&nbsp;$&nbsp;{getAverage(total)}&nbsp;</b> per month
+					</div>
 				</CardFooter>
 			</Card>
 		</GridItem>

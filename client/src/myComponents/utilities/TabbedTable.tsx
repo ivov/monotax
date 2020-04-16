@@ -8,10 +8,6 @@ import CustomTabs from "mdr/components/CustomTabs/CustomTabs";
 import MyTable from "./MyTable";
 
 class TabbedTable extends MyTable {
-	constructor(props: any) {
-		super(props);
-	}
-
 	render() {
 		const {
 			size,

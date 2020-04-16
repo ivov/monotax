@@ -25,10 +25,10 @@ const createCustomRoute = (
 	response: express.Response,
 	year: string
 ) => {
-	const earningsForYear = DatabaseService.getEarningsForYear(year);
-	const expensesForYear = DatabaseService.getExpensesForYear(year);
-	const savingsForYear = DatabaseService.getSavingsForYear(year);
-	const invoicedForYear = DatabaseService.getInvoicedForYear(year);
+	const earningsForYear = DatabaseService.getValueForYear("earnings", year);
+	const expensesForYear = DatabaseService.getValueForYear("expenses", year);
+	const invoicedForYear = DatabaseService.getValueForYear("invoiced", year);
+	const savingsForYear = DatabaseService.getValueForYear("savings", year);
 
 	const calculateTotalFor = (category: valuesForYear) =>
 		category.reduce((acc, cur) => acc + cur.total, 0);

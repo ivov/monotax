@@ -8,9 +8,6 @@ import CardBody from "mdr/components/Card/CardBody.js";
 import MyTable from "./MyTable";
 
 class RegularTable extends MyTable {
-	constructor(props: any) {
-		super(props);
-	}
 	render() {
 		const { size, invoicedForYear } = this.props;
 
