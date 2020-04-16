@@ -75,33 +75,52 @@ export default class DatabaseService {
 		);
 	}
 
-	/***  Returns the twelve values for the category during the year. */
-	static getValueForYear(
-		value: "earnings" | "expenses" | "invoiced" | "savings",
-		year: string
-	) {
-		const statement = DatabaseService.db.prepare(
-			`
-			WITH ${value}_per_month_and_year_with_record AS (
-				SELECT *,
-				CASE
-					WHEN LENGTH(year || month) = 5
-					THEN year || 0 || month
-					ELSE year || month
-				END AS record
-				FROM ${value}_per_month_and_year
-			)
+	static getOverviewData(): OverviewData {
+		const categories = ["earnings", "expenses", "invoiced", "savings"];
 
-			SELECT
-				year, month, round(total, 2) AS total
-			FROM (
-					SELECT *
-					FROM ${value}_per_month_and_year_with_record
-					WHERE year = ${year}
-					ORDER BY record DESC) t
-			ORDER BY t.record ASC
-			`
-		);
-		return statement.all();
+		// @ts-ignore: empty initialization
+		let overviewData: OverviewData = {};
+
+		categories.forEach(category => {
+			const statement = DatabaseService.db.prepare(
+				`SELECT * FROM ${category}_per_quarter_and_year`
+			);
+			overviewData[category] = statement.all();
+		});
+		return overviewData;
+	}
+
+	static getYearData(year: string): YearData {
+		const categories = ["earnings", "expenses", "invoiced", "savings"];
+
+		// @ts-ignore: empty initialization
+		let yearviewData: YearData = {};
+
+		categories.forEach(category => {
+			const statement = DatabaseService.db.prepare(
+				`
+				WITH ${category}_per_month_and_year_with_record AS (
+					SELECT *,
+					CASE
+						WHEN LENGTH(year || month) = 5
+						THEN year || 0 || month
+						ELSE year || month
+					END AS record
+					FROM ${category}_per_month_and_year
+				)
+
+				SELECT
+					year, month, round(total, 2) AS total
+				FROM (
+						SELECT *
+						FROM ${category}_per_month_and_year_with_record
+						WHERE year = ${year}
+						ORDER BY record DESC) t
+				ORDER BY t.record ASC
+				`
+			);
+			yearviewData[category] = statement.all();
+		});
+		return yearviewData;
 	}
 }

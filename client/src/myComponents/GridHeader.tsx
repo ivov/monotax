@@ -1,4 +1,5 @@
 import React from "react";
+
 import GridItem from "mdr/components/Grid/GridItem";
 import Card from "mdr/components/Card/Card";
 import CardHeader from "mdr/components/Card/CardHeader";
@@ -13,7 +14,7 @@ const GridHeader = (props: any) => {
 					{/* <CardIcon color={type}>
 						<RelevantIcon />
 					</CardIcon> */}
-					<p className="grid-header-title">Overview for Year {title}</p>
+					<p className="grid-header-title">{title}</p>
 				</CardHeader>
 				<CardFooter stats>
 					{/* <div className={classes.stats}>

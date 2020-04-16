@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from "react";
 
-import MainAreaWrapper from "../utilities/MainAreaWrapper";
 import GridContainer from "mdr/components/Grid/GridContainer";
-import MyGridItem from "myComponents/utilities/MyGridItem";
-import LineGraph from "myComponents/utilities/LineGraph";
-import GridHeader from "myComponents/utilities/GridHeader";
-import TabbedTable from "myComponents/utilities/TabbedTable";
 
-import "../../styling/chartist.css";
-import RegularTable from "myComponents/utilities/RegularTable";
+import MainAreaWrapper from "myComponents/MainAreaWrapper";
+import MyGridItem from "myComponents/MyGridItem";
+import LineGraph from "myComponents/LineGraph";
+import GridHeader from "myComponents/GridHeader";
+import TabbedTable from "myComponents/TabbedTable";
+import RegularTable from "myComponents/RegularTable";
+import "styling/chartist.css";
 
-const Overview = (year: string) => {
-	// sizes for X items per line
+const YearView = (year: string) => {
 	const sizes: { [key: string]: { [key: string]: Number } } = {
 		oneFourth: { xs: 12, sm: 6, md: 3 },
 		oneThird: { xs: 12, sm: 12, md: 4 },
@@ -26,10 +25,10 @@ const Overview = (year: string) => {
 	const [savingsForYear, setSavingsForYear] = useState([]);
 	const [invoicedForYear, setInvoicedForYear] = useState([]);
 	const [totalsForYear, setTotalsForYear] = useState({
-		earnings: "0",
-		expenses: "0",
-		savings: "0",
-		invoiced: "0"
+		earnings: 0,
+		expenses: 0,
+		savings: 0,
+		invoiced: 0
 	});
 
 	useEffect(() => {
@@ -47,7 +46,10 @@ const Overview = (year: string) => {
 	return (
 		<MainAreaWrapper>
 			<GridContainer>
-				<GridHeader size={sizes["fullWidth"]} title={year} />
+				<GridHeader
+					size={sizes["fullWidth"]}
+					title={"Overview for Year " + year}
+				/>
 				<MyGridItem
 					name="earnings"
 					type="success"
@@ -78,17 +80,25 @@ const Overview = (year: string) => {
 					size={sizes["oneHalf"]}
 					type="success"
 					data={earningsForYear}
+					frequency="month"
 				/>
 				<LineGraph
 					size={sizes["oneHalf"]}
 					type="danger"
 					data={expensesForYear}
+					frequency="month"
 				/>
-				<LineGraph size={sizes["oneHalf"]} type="info" data={savingsForYear} />
+				<LineGraph
+					size={sizes["oneHalf"]}
+					type="info"
+					data={savingsForYear}
+					frequency="month"
+				/>
 				<LineGraph
 					size={sizes["oneHalf"]}
 					type="primary"
 					data={invoicedForYear}
+					frequency="month"
 				/>
 			</GridContainer>
 			<GridContainer>
@@ -107,4 +117,4 @@ const Overview = (year: string) => {
 	);
 };
 
-export default Overview;
+export default YearView;

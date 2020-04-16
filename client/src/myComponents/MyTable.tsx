@@ -1,4 +1,5 @@
 import React from "react";
+
 import Table from "mdr/components/Table/Table";
 
 class MyTable extends React.Component<any, any> {
@@ -26,7 +27,7 @@ class MyTable extends React.Component<any, any> {
 			tableData.push([
 				obj.year.toString(),
 				monthNames[obj.month - 1],
-				"$ " + obj.total.toString()
+				"$ " + obj.total.toLocaleString()
 			]);
 		});
 

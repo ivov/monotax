@@ -1,8 +1,8 @@
 import React from "react";
 import { List, Datagrid, TextField } from "react-admin";
-import MainAreaWrapper from "../utilities/MainAreaWrapper";
-import ExpandingInfoPanel from "../utilities/ExpandingInfoPanel";
-import DecimalNumberField from "myComponents/utilities/DecimalNumberField";
+import MainAreaWrapper from "../MainAreaWrapper";
+import ExpandingInfoPanel from "../ExpandingInfoPanel";
+import DecimalNumberField from "myComponents/DecimalNumberField";
 
 const InvoicesList = (props: any) => {
 	return (

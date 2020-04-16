@@ -1,52 +1,42 @@
 import express from "express";
 import DatabaseService from "../DatabaseService";
 
-type valuesForYear = { total: number; month: string; year: string }[];
-type totalsForYear = {
-	earnings: string;
-	expenses: string;
-	savings: string;
-	invoiced: string;
-};
-
 const setCustomRoutes = (app: express.Application) => {
+	// overview route
+	app.get("/api/overview/", (request, response) => {
+		const OverviewData = DatabaseService.getOverviewData();
+		response.status(200).json(OverviewData);
+	});
+
+	// year routes
 	const years = ["2017", "2018", "2019"];
 	years.forEach(year =>
-		app.get(
-			"/api/year/" + year,
-			(request: express.Request, response: express.Response) =>
-				createCustomRoute(request, response, year)
-		)
+		app.get("/api/year/" + year, (request, response) => {
+			const yearData = DatabaseService.getYearData(year);
+			const totalsForYear = calculateTotals(yearData);
+
+			response.status(200).json({
+				earningsForYear: yearData["earnings"],
+				expensesForYear: yearData["expenses"],
+				savingsForYear: yearData["savings"],
+				invoicedForYear: yearData["invoiced"],
+				totalsForYear
+			});
+		})
 	);
 };
 
-const createCustomRoute = (
-	request: express.Request,
-	response: express.Response,
-	year: string
-) => {
-	const earningsForYear = DatabaseService.getValueForYear("earnings", year);
-	const expensesForYear = DatabaseService.getValueForYear("expenses", year);
-	const invoicedForYear = DatabaseService.getValueForYear("invoiced", year);
-	const savingsForYear = DatabaseService.getValueForYear("savings", year);
+const calculateTotals = (yearData: YearData): TotalsForYear => {
+	// @ts-ignore: empty initialization
+	let totals: TotalsForYear = {};
 
-	const calculateTotalFor = (category: valuesForYear) =>
-		category.reduce((acc, cur) => acc + cur.total, 0);
-
-	const totalsForYear: totalsForYear = {
-		earnings: calculateTotalFor(earningsForYear).toLocaleString(),
-		expenses: calculateTotalFor(expensesForYear).toLocaleString(),
-		savings: calculateTotalFor(savingsForYear).toLocaleString(),
-		invoiced: calculateTotalFor(invoicedForYear).toLocaleString()
-	};
-
-	response.status(200).json({
-		earningsForYear,
-		expensesForYear,
-		savingsForYear,
-		invoicedForYear,
-		totalsForYear
-	});
+	for (let category in yearData) {
+		totals[category] = yearData[category].reduce(
+			(acc, cur) => acc + cur.total,
+			0
+		);
+	}
+	return totals;
 };
 
 export default setCustomRoutes;

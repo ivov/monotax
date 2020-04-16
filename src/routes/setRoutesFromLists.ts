@@ -1,18 +1,18 @@
 import express from "express";
 import DatabaseService from "../DatabaseService";
 
-const setAutoRoutes = (app: express.Application) => {
+const setRoutesFromLists = (app: express.Application) => {
 	const autoRoutes = ["invoices", "earnings", "expenses", "savings"];
 	autoRoutes.forEach(route =>
 		app.get(
 			"/api/" + route,
 			(request: express.Request, response: express.Response) =>
-				createAutoRoute(request, response, route)
+				createRouteFromList(request, response, route)
 		)
 	);
 };
 
-const createAutoRoute = (
+const createRouteFromList = (
 	request: express.Request,
 	response: express.Response,
 	route: string
@@ -42,4 +42,4 @@ const VIEWS: { [key: string]: string } = {
 	expenses: "expense_amounts_in_ars_and_usd"
 };
 
-export default setAutoRoutes;
+export default setRoutesFromLists;

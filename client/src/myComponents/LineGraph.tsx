@@ -8,15 +8,18 @@ import CardHeader from "mdr/components/Card/CardHeader";
 import CardFooter from "mdr/components/Card/CardFooter";
 
 const LineGraph = (props: any) => {
-	const { size, type, data: dataArray } = props;
-	const lineGraphData = formatIntoLineGraphData(dataArray);
+	const { size, type, frequency, data } = props;
+	// @ts-ignore: empty initialization
+	let lineGraphData: LineGraphData = {};
+
+	lineGraphData = convertDataToLineGraphData(data, frequency);
 
 	const graphOptions: any = {
 		lineSmooth: Chartist.Interpolation.cardinal({
 			tension: 0
 		}),
-		low: calculateBottomOfGraph(lineGraphData.series),
-		high: calculateTopOfGraph(lineGraphData.series),
+		low: calculateBottomOfGraph(lineGraphData["series"]),
+		high: calculateTopOfGraph(lineGraphData["series"]),
 		chartPadding: {
 			top: 0,
 			right: 0,
@@ -75,14 +78,18 @@ const LineGraph = (props: any) => {
 	);
 };
 
-const formatIntoLineGraphData = (dataArray: any) => {
-	let labels = [];
-	let series = [];
-	for (let obj of dataArray) {
-		labels.push(obj["month"].toString());
-		series.push(obj["total"]);
+const convertDataToLineGraphData = (
+	data: any,
+	frequency: "month" | "quarter"
+): LineGraphData => {
+	let labels: string[] = [];
+	let series: number[][] = [[]];
+
+	for (let obj of data) {
+		labels.push(obj[frequency].toString());
+		series[0].push(obj["total"]);
 	}
-	series = [series];
+
 	return {
 		labels,
 		series

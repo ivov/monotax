@@ -1,6 +1,6 @@
 import React from "react";
 import { List, Datagrid, TextField, NumberField } from "react-admin";
-import MainAreaWrapper from "../utilities/MainAreaWrapper";
+import MainAreaWrapper from "../MainAreaWrapper";
 
 const ExpensesList = (props: any) => {
 	return (
