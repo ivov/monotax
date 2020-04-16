@@ -3,6 +3,7 @@ import { List, Datagrid, TextField } from "react-admin";
 import DecimalNumberField from "../utilities/DecimalNumberField";
 import MainAreaWrapper from "../utilities/MainAreaWrapper";
 
+// Not currently in use.
 const AdwordsList = (props: []) => {
 	return (
 		<MainAreaWrapper>

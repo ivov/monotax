@@ -6,3 +6,37 @@ body {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
+
+h3.total {
+	padding-top: 4px;
+	letter-spacing: -0.5px;
+	color: #708090;
+}
+
+.grid-header {
+	margin-top: -30px;
+}
+
+p.grid-header-title {
+	color: #708090;
+	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+	font-weight: bold;
+	font-size: 25px;
+	text-align: center;
+	margin-bottom: 0;
+	padding-bottom: 0;
+}
+
+.invoices-header {
+	height: 10px;
+	margin-top: 0;
+	margin-bottom: 10px;
+}
+
+.makeStyles-cardBody-286 {
+	margin-top: -25px;
+}
+
+.MuiTab-wrapper {
+	font-family: Verdana, Geneva, Tahoma, sans-serif;
+}

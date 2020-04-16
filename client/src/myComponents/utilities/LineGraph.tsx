@@ -1,5 +1,4 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import Chartist from "chartist";
 import ChartistGraph from "react-chartist";
 
@@ -7,11 +6,8 @@ import GridItem from "mdr/components/Grid/GridItem";
 import Card from "mdr/components/Card/Card";
 import CardHeader from "mdr/components/Card/CardHeader";
 import CardFooter from "mdr/components/Card/CardFooter";
-import styles from "mdr/assets/jss/material-dashboard-react/views/dashboardStyle";
 
 const LineGraph = (props: any) => {
-	const useStyles = makeStyles(styles as any);
-	const classes = useStyles();
 	const { size, type, data: dataArray } = props;
 	const lineGraphData = formatIntoLineGraphData(dataArray);
 
@@ -72,7 +68,7 @@ const LineGraph = (props: any) => {
 					/>
 				</CardHeader>
 				<CardFooter chart>
-					<div className={classes.stats}>Comparison or other info</div>
+					{/* <div className={classes.stats}>Comparison or other info</div> */}
 				</CardFooter>
 			</Card>
 		</GridItem>

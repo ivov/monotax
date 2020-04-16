@@ -7,15 +7,19 @@ const setCustomRoutes = (app: express.Application) => {
 		(request: express.Request, response: express.Response) => {
 			console.log("ENDPOINT HIT " + "/api/most-recent");
 
-			const mostRecentEarnings = DatabaseService.getMostRecent("earnings");
-			const mostRecentExpenses = DatabaseService.getMostRecent("expenses");
-			const mostRecentSavings = DatabaseService.getMostRecent("savings");
-			const allThreeCategories = {
-				mostRecentEarnings,
-				mostRecentExpenses,
-				mostRecentSavings
-			};
-			response.status(200).json(allThreeCategories);
+			const earningsForYear = DatabaseService.getDataForYear("earnings");
+			const expensesForYear = DatabaseService.getDataForYear("expenses");
+			const savingsForYear = DatabaseService.getDataForYear("savings");
+			const invoicedForYear = DatabaseService.getDataForYear("invoiced");
+			const totalsForYear = DatabaseService.getDataForYear("totals");
+
+			response.status(200).json({
+				earningsForYear,
+				expensesForYear,
+				savingsForYear,
+				invoicedForYear,
+				totalsForYear
+			});
 		}
 	);
 };

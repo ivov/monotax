@@ -75,10 +75,20 @@ export default class DatabaseService {
 		);
 	}
 
-	static getMostRecent(table: "earnings" | "expenses" | "savings") {
-		const mostRecentStatement = DatabaseService.db.prepare(
-			`SELECT * FROM most_recent_months_${table}`
-		);
-		return mostRecentStatement.all();
+	static getDataForYear(
+		table: "earnings" | "expenses" | "savings" | "invoiced" | "totals"
+	) {
+		let statement: betterSqlite3.Statement;
+		if (table === "totals") {
+			statement = DatabaseService.db.prepare(
+				`SELECT * FROM historical_totals_2019`
+			);
+		} else {
+			statement = DatabaseService.db.prepare(
+				`SELECT * FROM historical_${table}_2019`
+			);
+		}
+
+		return statement.all();
 	}
 }

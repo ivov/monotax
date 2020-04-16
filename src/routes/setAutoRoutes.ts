@@ -2,7 +2,7 @@ import express from "express";
 import DatabaseService from "../DatabaseService";
 
 const setAutoRoutes = (app: express.Application) => {
-	const autoRoutes = ["invoices", "earnings", "expenses", "savings", "adwords"];
+	const autoRoutes = ["invoices", "earnings", "expenses", "savings"];
 	autoRoutes.forEach(route =>
 		app.get(
 			"/api/" + route,
@@ -39,8 +39,7 @@ const VIEWS: { [key: string]: string } = {
 	invoices: "invoices_with_tax_id",
 	earnings: "earned_amounts_in_ars_and_usd",
 	savings: "savings_per_month_and_year",
-	expenses: "expense_amounts_in_ars_and_usd",
-	adwords: "adwords_amounts_in_ars_and_usd"
+	expenses: "expense_amounts_in_ars_and_usd"
 };
 
 export default setAutoRoutes;

@@ -6,7 +6,6 @@ import InvoicesList from "./autoRoutes/InvoicesList";
 import EarningsList from "./autoRoutes/EarningsList";
 import ExpensesList from "./autoRoutes/ExpensesList";
 import SavingsList from "./autoRoutes/SavingsList";
-import AdwordsList from "./autoRoutes/AdwordsList";
 import customRoutes from "./customRoutes/customRoutes";
 import dataProvider from "../dataProvider";
 import MyLayout from "./MyLayout";
@@ -27,7 +26,6 @@ const MyAdmin = () => {
 			<Resource name="invoices" list={InvoicesList} />
 			<Resource name="expenses" list={ExpensesList} />
 			<Resource name="savings" list={SavingsList} />
-			<Resource name="adwords" list={AdwordsList} />
 		</Admin>
 	);
 };

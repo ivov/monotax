@@ -138,7 +138,10 @@ export default function Sidebar(props) {
 						})
 					}}
 				>
-					{brand}
+					{/* MODIFICATION */}
+					<div style={{ marginTop: "28px" }}></div>
+					{/* {brand} */}
+					{/* MODIFICATION */}
 					<div className={classes.sidebarWrapper}>{links}</div>
 					{image !== undefined ? (
 						<div

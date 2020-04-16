@@ -49,7 +49,7 @@ export default class InvoiceParser {
 		const filepath = path.join(process.cwd(), "data", "pdf", filename);
 		const buffer = fs.readFileSync(filepath);
 		let pdfContents: PdfContents = await pdfParse(buffer, { max: 1 });
-		// { `max: 1` } for first page only, since pages 2 and 3 are duplicates
+		// { `max: 1` } for first page only, since pages 2 and 3 are duplicates in PDF invoice
 		return pdfContents.text;
 	}
 
