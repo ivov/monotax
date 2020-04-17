@@ -1,8 +1,16 @@
 import React from "react";
 import { List, Datagrid, TextField, NumberField } from "react-admin";
-import MainAreaWrapper from "../MainAreaWrapper";
+import { makeStyles } from "@material-ui/core/styles";
+import MainAreaWrapper from "myComponents/MainAreaWrapper";
+
+const useListStyles = makeStyles({
+	headerCell: {
+		backgroundColor: "#e73345"
+	}
+});
 
 const ExpensesList = (props: any) => {
+	const classes = useListStyles();
 	return (
 		<MainAreaWrapper>
 			<List
@@ -10,8 +18,9 @@ const ExpensesList = (props: any) => {
 				sort={{ field: "id", order: "DESC" }}
 				perPage={12}
 				bulkActionButtons={false}
+				exporter={false}
 			>
-				<Datagrid rowClick="edit">
+				<Datagrid rowClick="edit" classes={classes}>
 					<TextField source="year" label="Year" />
 					<TextField source="month" label="Month" />
 					<NumberField

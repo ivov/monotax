@@ -5,11 +5,9 @@ import EarningsIcon from "@material-ui/icons/AddCircle";
 import ExpensesIcon from "@material-ui/icons/RemoveCircle";
 import InvoiceIcon from "@material-ui/icons/Description";
 import SavingsIcon from "@material-ui/icons/Star";
-
 import Sidebar from "mdr/components/Sidebar/Sidebar";
 import DashboardPage from "mdr/views/Dashboard/Dashboard";
 import sidebarImage from "mdr/assets/img/sidebar-7.jpg";
-
 import YearView from "./YearView";
 import Overview from "./Overview";
 

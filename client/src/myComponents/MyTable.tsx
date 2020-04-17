@@ -1,5 +1,4 @@
 import React from "react";
-
 import Table from "mdr/components/Table/Table";
 
 class MyTable extends React.Component<any, any> {

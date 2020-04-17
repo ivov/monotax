@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
-
 import GridContainer from "mdr/components/Grid/GridContainer";
-
 import MainAreaWrapper from "myComponents/MainAreaWrapper";
 import MyGridItem from "myComponents/MyGridItem";
 import Graph from "myComponents/Graph";
@@ -41,7 +39,7 @@ const YearView = (year: string) => {
 				setInvoicedForYear(data["invoicedForYear"]);
 				setTotalsForYear(data["totalsForYear"]);
 			});
-	}, []); // empty array as second arg to run api call only once at first render
+	}, [year]); // empty array as second arg to run api call only once at first render
 
 	const sectionTypes: { [key: string]: string } = {
 		earnings: "success",

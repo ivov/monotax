@@ -1,7 +1,5 @@
 import React from "react";
-
 import GridContainer from "mdr/components/Grid/GridContainer";
-
 import Graph from "myComponents/Graph";
 
 interface OverviewLowerSectionProps {
@@ -35,7 +33,7 @@ const OverviewLowerSection = (props: OverviewLowerSectionProps) => {
 					type={type}
 					frequency="year"
 					data={yearlyTotalsForSection}
-					style="bar"
+					format="bar"
 					footer={`Total ${name} per year`}
 				/>
 				<Graph
@@ -43,7 +41,7 @@ const OverviewLowerSection = (props: OverviewLowerSectionProps) => {
 					type={type}
 					frequency="year"
 					data={monthlyAveragesForSection}
-					style="bar"
+					format="bar"
 					footer={`Monthly average ${name} per year`}
 				/>
 				<Graph

@@ -1,10 +1,9 @@
-// NOT CURRENTLY IN USE!
-
 import React from "react";
 import { List, Datagrid, TextField } from "react-admin";
-import DecimalNumberField from "../DecimalNumberField";
-import MainAreaWrapper from "../MainAreaWrapper";
+import DecimalNumberField from "myComponents/DecimalNumberField";
+import MainAreaWrapper from "myComponents/MainAreaWrapper";
 
+// NOT CURRENTLY IN USE!s
 const AdwordsList = (props: []) => {
 	return (
 		<MainAreaWrapper>

@@ -1,5 +1,4 @@
 import React from "react";
-
 import EarningsIcon from "@material-ui/icons/AddCircle";
 import ExpensesIcon from "@material-ui/icons/RemoveCircle";
 import SavingsIcon from "@material-ui/icons/Star";

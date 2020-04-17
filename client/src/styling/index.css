@@ -41,8 +41,7 @@ p.grid-header-title {
 	font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
-td.MuiTableCell-root {
-	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-	font-size: 15px;
-	font-weight: 400;
+.MuiTableSortLabel-active > span,
+svg.MuiTableSortLabel-icon {
+	color: white !important;
 }

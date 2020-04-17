@@ -1,11 +1,9 @@
 import React from "react";
-
 import GridItem from "mdr/components/Grid/GridItem.js";
 import Card from "mdr/components/Card/Card.js";
 import CardHeader from "mdr/components/Card/CardHeader.js";
 import CardBody from "mdr/components/Card/CardBody.js";
-
-import MyTable from "./MyTable";
+import MyTable from "myComponents/MyTable";
 
 class RegularTable extends MyTable {
 	render() {

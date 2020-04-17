@@ -1,9 +1,7 @@
 import React from "react";
 import Chartist from "chartist";
 import ChartistGraph from "react-chartist";
-
 import { makeStyles } from "@material-ui/core/styles";
-
 import GridItem from "mdr/components/Grid/GridItem";
 import Card from "mdr/components/Card/Card";
 import CardHeader from "mdr/components/Card/CardHeader";
@@ -12,9 +10,9 @@ import styles from "mdr/assets/jss/material-dashboard-react/views/dashboardStyle
 
 const useStyles = makeStyles(styles as any);
 
-// Defaults to line graph, unless `style: "bar"`
+// Format defaults to line graph, unless `format: "bar"`
 const Graph = (props: any) => {
-	const { size, type, frequency, data, style, footer } = props;
+	const { size, type, frequency, data, format, footer } = props;
 	// @ts-ignore: empty initialization
 	let graphData: GraphData = {};
 	const classes = useStyles();
@@ -103,9 +101,9 @@ const Graph = (props: any) => {
 					<ChartistGraph
 						className="ct-chart"
 						data={graphData}
-						type={style === "bar" ? "Bar" : "Line"}
-						options={style === "bar" ? barGraphOptions : lineGraphOptions}
-						listener={style === "bar" ? barGraphAnimation : lineGraphAnimation}
+						type={format === "bar" ? "Bar" : "Line"}
+						options={format === "bar" ? barGraphOptions : lineGraphOptions}
+						listener={format === "bar" ? barGraphAnimation : lineGraphAnimation}
 					/>
 				</CardHeader>
 				<CardFooter chart>
