@@ -3,14 +3,14 @@ import { Admin, Resource } from "react-admin";
 import { Route, Redirect } from "react-router-dom";
 import { createBrowserHistory } from "history";
 
-import InvoicesList from "./lists/InvoicesList";
-import EarningsList from "./lists/EarningsList";
-import ExpensesList from "./lists/ExpensesList";
-import SavingsList from "./lists/SavingsList";
+import InvoicesList from "myComponents/lists/InvoicesList";
+import EarningsList from "myComponents/lists/EarningsList";
+import ExpensesList from "myComponents/lists/ExpensesList";
+import SavingsList from "myComponents/lists/SavingsList";
+import MyLayout from "myComponents/MyLayout";
+import YearView from "myComponents/YearView";
+import Overview from "myComponents/Overview";
 import dataProvider from "../dataProvider";
-import MyLayout from "./MyLayout";
-import YearView from "./YearView";
-import Overview from "./Overview";
 
 const browserHistory = createBrowserHistory();
 

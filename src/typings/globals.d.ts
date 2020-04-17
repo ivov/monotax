@@ -28,7 +28,7 @@ type InvoiceData = {
 
 type ValuesForYear = { total: number; month: string; year: string }[];
 
-type OverviewData = {
+type QuarterlyData = {
 	[key: string]: { quarter: string; total: number }[];
 	earnings: { quarter: string; total: number }[];
 	expenses: { quarter: string; total: number }[];
@@ -36,7 +36,16 @@ type OverviewData = {
 	savings: { quarter: string; total: number }[];
 };
 
+type AllTimeTotals = {
+	[key: string]: number;
+	earnings: number;
+	expenses: number;
+	savings: number;
+	invoiced: number;
+};
+
 type YearData = {
+	// also for last six months
 	[key: string]: { year: string; month: number; total: number }[];
 	earnings: { year: string; month: number; total: number }[];
 	expenses: { year: string; month: number; total: number }[];
@@ -50,4 +59,21 @@ type TotalsForYear = {
 	expenses: number;
 	savings: number;
 	invoiced: number;
+};
+
+type YearlyTotals = {
+	[key: string]: { year: string; total: number }[];
+	earnings: { year: string; total: number }[];
+	expenses: { year: string; total: number }[];
+	invoiced: { year: string; total: number }[];
+	savings: { year: string; total: number }[];
+};
+
+type MonthlyAverages = {
+	// per year
+	[key: string]: { year: string; average: number }[];
+	earnings: { year: string; average: number }[];
+	expenses: { year: string; average: number }[];
+	invoiced: { year: string; average: number }[];
+	savings: { year: string; average: number }[];
 };

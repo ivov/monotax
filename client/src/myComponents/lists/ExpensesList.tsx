@@ -8,12 +8,12 @@ const ExpensesList = (props: any) => {
 			<List
 				{...props}
 				sort={{ field: "id", order: "DESC" }}
-				perPage={25}
+				perPage={12}
 				bulkActionButtons={false}
 			>
 				<Datagrid rowClick="edit">
-					<TextField source="expense_year" label="Year" />
-					<TextField source="expense_month" label="Month" />
+					<TextField source="year" label="Year" />
+					<TextField source="month" label="Month" />
 					<NumberField
 						source="ars_amount"
 						label="ARS"

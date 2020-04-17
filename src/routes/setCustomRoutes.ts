@@ -1,11 +1,23 @@
 import express from "express";
+
 import DatabaseService from "../DatabaseService";
 
 const setCustomRoutes = (app: express.Application) => {
 	// overview route
 	app.get("/api/overview/", (request, response) => {
-		const OverviewData = DatabaseService.getOverviewData();
-		response.status(200).json(OverviewData);
+		const quarterlyData = DatabaseService.getQuarterlyData();
+		const allTimeTotals = DatabaseService.getAllTimeTotals();
+		const yearlyTotals = DatabaseService.getYearlyTotals();
+		const monthlyAveragesPerYear = DatabaseService.getMonthlyAveragesPerYear();
+		const lastSixMonthsValues = DatabaseService.getLastSixMonthsValues();
+
+		response.status(200).json({
+			quarterlyData,
+			allTimeTotals,
+			yearlyTotals,
+			monthlyAveragesPerYear,
+			lastSixMonthsValues
+		});
 	});
 
 	// year routes

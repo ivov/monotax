@@ -4,7 +4,7 @@ import GridContainer from "mdr/components/Grid/GridContainer";
 
 import MainAreaWrapper from "myComponents/MainAreaWrapper";
 import MyGridItem from "myComponents/MyGridItem";
-import LineGraph from "myComponents/LineGraph";
+import Graph from "myComponents/Graph";
 import GridHeader from "myComponents/GridHeader";
 import TabbedTable from "myComponents/TabbedTable";
 import RegularTable from "myComponents/RegularTable";
@@ -24,7 +24,7 @@ const YearView = (year: string) => {
 	const [expensesForYear, setExpensesForYear] = useState([]);
 	const [savingsForYear, setSavingsForYear] = useState([]);
 	const [invoicedForYear, setInvoicedForYear] = useState([]);
-	const [totalsForYear, setTotalsForYear] = useState({
+	const [totalsForYear, setTotalsForYear] = useState<TotalsForYear>({
 		earnings: 0,
 		expenses: 0,
 		savings: 0,
@@ -43,6 +43,22 @@ const YearView = (year: string) => {
 			});
 	}, []); // empty array as second arg to run api call only once at first render
 
+	const sectionTypes: { [key: string]: string } = {
+		earnings: "success",
+		expenses: "danger",
+		savings: "info",
+		invoiced: "primary"
+	};
+
+	const sections = Object.keys(sectionTypes);
+
+	const sectionValues: { [key: string]: never[] } = {
+		earnings: earningsForYear,
+		expenses: expensesForYear,
+		savings: savingsForYear,
+		invoiced: invoicedForYear
+	};
+
 	return (
 		<MainAreaWrapper>
 			<GridContainer>
@@ -50,57 +66,32 @@ const YearView = (year: string) => {
 					size={sizes["fullWidth"]}
 					title={"Overview for Year " + year}
 				/>
-				<MyGridItem
-					name="earnings"
-					type="success"
-					size={sizes["oneFourth"]}
-					total={totalsForYear["earnings"]}
-				/>
-				<MyGridItem
-					name="expenses"
-					type="danger"
-					size={sizes["oneFourth"]}
-					total={totalsForYear["expenses"]}
-				/>
-				<MyGridItem
-					name="savings"
-					type="info"
-					size={sizes["oneFourth"]}
-					total={totalsForYear["savings"]}
-				/>
-				<MyGridItem
-					name="invoices"
-					type="primary"
-					size={sizes["oneFourth"]}
-					total={totalsForYear["invoiced"]}
-				/>
+				{sections.map(section => {
+					return (
+						<MyGridItem
+							name={section}
+							type={sectionTypes[section]}
+							size={sizes["oneFourth"]}
+							total={totalsForYear[section]}
+							frequency="month"
+						/>
+					);
+				})}
 			</GridContainer>
+
 			<GridContainer>
-				<LineGraph
-					size={sizes["oneHalf"]}
-					type="success"
-					data={earningsForYear}
-					frequency="month"
-				/>
-				<LineGraph
-					size={sizes["oneHalf"]}
-					type="danger"
-					data={expensesForYear}
-					frequency="month"
-				/>
-				<LineGraph
-					size={sizes["oneHalf"]}
-					type="info"
-					data={savingsForYear}
-					frequency="month"
-				/>
-				<LineGraph
-					size={sizes["oneHalf"]}
-					type="primary"
-					data={invoicedForYear}
-					frequency="month"
-				/>
+				{sections.map(section => {
+					return (
+						<Graph
+							size={sizes["oneHalf"]}
+							type={sectionTypes[section]}
+							data={sectionValues[section]}
+							frequency="month"
+						/>
+					);
+				})}
 			</GridContainer>
+
 			<GridContainer>
 				<TabbedTable
 					size={sizes["sevenTwelfths"]}

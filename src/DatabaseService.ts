@@ -17,14 +17,14 @@ export default class DatabaseService {
 	) {
 		const getAllStatement = DatabaseService.db.prepare(
 			`SELECT * FROM ${table}
-      ORDER BY ${field} ${order} LIMIT ${limit} OFFSET ${offset}`
+      ORDER BY ${field} ${order} LIMIT ${limit} OFFSET ${offset};`
 		);
 		return getAllStatement.all();
 	}
 
 	static getCount(table: string) {
 		const countStatement = DatabaseService.db.prepare(
-			`SELECT COUNT(*) AS count FROM ${table}`
+			`SELECT COUNT(*) AS count FROM ${table};`
 		);
 		return countStatement.get().count;
 	}
@@ -45,7 +45,7 @@ export default class DatabaseService {
           client_vat_status,
           ars_amount
         )
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
     `);
 
 		const {
@@ -75,19 +75,84 @@ export default class DatabaseService {
 		);
 	}
 
-	static getOverviewData(): OverviewData {
+	static getQuarterlyData(): QuarterlyData {
 		const categories = ["earnings", "expenses", "invoiced", "savings"];
 
 		// @ts-ignore: empty initialization
-		let overviewData: OverviewData = {};
+		let overviewData: QuarterlyData = {};
 
 		categories.forEach(category => {
 			const statement = DatabaseService.db.prepare(
-				`SELECT * FROM ${category}_per_quarter_and_year`
+				`SELECT * FROM ${category}_per_quarter_and_year;`
 			);
 			overviewData[category] = statement.all();
 		});
+
 		return overviewData;
+	}
+
+	static getAllTimeTotals(): AllTimeTotals {
+		const categories = ["earnings", "expenses", "invoiced", "savings"];
+
+		// @ts-ignore: empty initialization
+		let allTimeTotals: AllTimeTotals = {};
+
+		categories.forEach(category => {
+			const statement = DatabaseService.db.prepare(
+				`SELECT * FROM ${category}_total_all_time;`
+			);
+			allTimeTotals[category] = statement.get()["total"];
+		});
+
+		return allTimeTotals;
+	}
+
+	static getYearlyTotals(): YearlyTotals {
+		const categories = ["earnings", "expenses", "invoiced", "savings"];
+
+		// @ts-ignore: empty initialization
+		let yearlyTotals: YearlyTotals = {};
+
+		categories.forEach(category => {
+			const statement = DatabaseService.db.prepare(
+				`SELECT * FROM ${category}_per_year;`
+			);
+			yearlyTotals[category] = statement.all();
+		});
+
+		return yearlyTotals;
+	}
+
+	static getMonthlyAveragesPerYear(): MonthlyAverages {
+		const categories = ["earnings", "expenses", "invoiced", "savings"];
+
+		// @ts-ignore: empty initialization
+		let monthlyAveragesPerYear: MonthlyAverages = {};
+
+		categories.forEach(category => {
+			const statement = DatabaseService.db.prepare(
+				`SELECT year, average AS total FROM ${category}_monthly_average_per_year;`
+			);
+			monthlyAveragesPerYear[category] = statement.all();
+		});
+		// `average` renamed as `total` for `convertToGraphData`
+		return monthlyAveragesPerYear;
+	}
+
+	static getLastSixMonthsValues(): YearData {
+		const categories = ["earnings", "expenses", "invoiced", "savings"];
+
+		// @ts-ignore: empty initialization
+		let lastSixMonthsValues: YearData = {};
+
+		categories.forEach(category => {
+			const statement = DatabaseService.db.prepare(
+				`SELECT month, total FROM ${category}_last_six_months;`
+			);
+			lastSixMonthsValues[category] = statement.all();
+		});
+
+		return lastSixMonthsValues;
 	}
 
 	static getYearData(year: string): YearData {
@@ -116,11 +181,12 @@ export default class DatabaseService {
 						FROM ${category}_per_month_and_year_with_record
 						WHERE year = ${year}
 						ORDER BY record DESC) t
-				ORDER BY t.record ASC
+				ORDER BY t.record ASC;
 				`
 			);
 			yearviewData[category] = statement.all();
 		});
+
 		return yearviewData;
 	}
 }

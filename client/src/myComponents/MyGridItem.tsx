@@ -17,7 +17,8 @@ import styles from "mdr/assets/jss/material-dashboard-react/views/dashboardStyle
 const useStyles = makeStyles(styles as any);
 
 const MyGridItem = (props: any) => {
-	const { name, type, size, total } = props;
+	const { name, type, size, total, frequency, divisor } = props;
+
 	const classes = useStyles();
 
 	const getIcon = (name: string) => {
@@ -25,7 +26,7 @@ const MyGridItem = (props: any) => {
 			earnings: EarningsIcon,
 			expenses: ExpensesIcon,
 			savings: SavingsIcon,
-			invoices: InvoiceIcon
+			invoiced: InvoiceIcon
 		};
 		return icons[name];
 	};
@@ -36,11 +37,17 @@ const MyGridItem = (props: any) => {
 
 	const decimalFormat = { maximumFractionDigits: 0 };
 
-	const getAverage = (total: number) =>
-		(total / 12).toLocaleString(undefined, decimalFormat);
+	const getAverage = (total: number, divisor: number) => {
+		if (frequency === "month") {
+			divisor = 12;
+		}
+		return (total / divisor).toLocaleString(undefined, decimalFormat);
+	};
 
 	const formatTotal = (total: number) =>
 		total.toLocaleString(undefined, decimalFormat);
+
+	const averagesLabel = frequency === "quarter" ? "Averages:" : "Average:";
 
 	return (
 		<GridItem {...size}>
@@ -50,12 +57,20 @@ const MyGridItem = (props: any) => {
 						<RelevantIcon />
 					</CardIcon>
 					<p className={classes.cardCategory}>{capitalizeFirstLetter(name)}</p>
-					{/* <h3 className={classes.stats}>${total}</h3> */}
 					<h3 className="total">$ {formatTotal(total)}</h3>
 				</CardHeader>
 				<CardFooter stats>
 					<div className={classes.stats}>
-						Average: <b>&nbsp;$&nbsp;{getAverage(total)}&nbsp;</b> per month
+						<div>
+							{averagesLabel}
+							<br />
+							<b>$ {getAverage(total, divisor)}&nbsp;</b>per {frequency}
+							{frequency === "quarter" ? (
+								<div>
+									<b>$ {getAverage(total, divisor * 3)}</b> per month
+								</div>
+							) : null}
+						</div>
 					</div>
 				</CardFooter>
 			</Card>

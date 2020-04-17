@@ -36,10 +36,10 @@ const createRouteFromList = (
 
 /* Collection of react-admin views and their corresponding views in monotax.db */
 const VIEWS: { [key: string]: string } = {
-	invoices: "invoices_with_tax_id",
-	earnings: "earned_amounts_in_ars_and_usd",
+	earnings: "earnings_in_ars_and_usd",
+	expenses: "expenses_in_ars_and_usd",
 	savings: "savings_per_month_and_year",
-	expenses: "expense_amounts_in_ars_and_usd"
+	invoices: "invoiced_with_tax_id"
 };
 
 export default setRoutesFromLists;
