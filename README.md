@@ -22,7 +22,7 @@ Built with TypeScript/React, TypeScript/Node and SQLite.
 
 ## Overview
 
-Quick app to display a client's earnings, expenses, savings and invoices in material design, including a CLI utility for PDF invoice parsing.
+Quick app to display a client's earnings, expenses, savings and invoices in material design, including a PDF invoice parser.
 
 <p align="center">
     <img src="demo/overview.gif">
@@ -56,6 +56,10 @@ Features:
 
 PDF invoices are placed at `data/pdf` and parsed with `npm run parse`. The invoices must be formatted as those issued under the monotax scheme of Argentina's Federal Administration of Public Revenue.
 
+<p align="center">
+    <img src="demo/cli.gif">
+</p>
+
 Every PDF is converted to a JSON object and is persisted in the database at `data/sql/monotax.db`. The db is pre-populated with earnings, expenses and ARS-USD exchange rate data, queriable through 35+ SQL views, many of which are used by the backend. A demo db and its full schema are included.
 
 PDF invoice sample:
@@ -66,7 +70,7 @@ PDF invoice sample:
 
 JSON object sample:
 
-```json
+```js
 {
 	date: "Mon Dec 23 2019 12:41:30 GMT-0300 (Argentina Standard Time)",
 	id: "692",

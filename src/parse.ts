@@ -5,7 +5,9 @@ import DatabaseService from "./DatabaseService";
 const parse = async () => {
 	console.log("Fetching filenames...");
 	let counter = 0;
-	const filenames = await FilenameFetcher.fetchFilenames();
+	let filenames = await FilenameFetcher.fetchFilenames();
+
+	filenames = filenames.filter(filename => filename !== ".gitignore");
 
 	filenames.forEach(async filename => {
 		const invoice = await InvoiceParser.process(filename);
