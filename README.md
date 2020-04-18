@@ -6,8 +6,10 @@ Colorful dashboard to display financial stats for a side business.
 
 Built with TypeScript/React, TypeScript/Node and SQLite.
 
+<br>
+
 <p align="center">
-    <img src="demo/ts.png" width="150">
+    <img src="demo/ts.png" width="140">
     &nbsp;&nbsp;&nbsp;&nbsp;
     <img src="demo/react.png" width="150">
     &nbsp;&nbsp;&nbsp;&nbsp;
@@ -32,8 +34,10 @@ Features:
 - Colorful animated charts and tabbed tables
 - Expanding panels, pagination and sorting
 
+## Screenshots
+
 <p align="center">
-    <img src="demo/2019.png">
+    <img src="demo/2019.png" width="">
 </p>
 
 <p align="center">
@@ -62,18 +66,18 @@ JSON object sample:
 
 ```json
 {
-	date: "Mon Dec 23 2019 12:41:30 GMT-0300 (Argentina Standard Time)";
-	id: "692";
-	name: "Lorem Ipsum";
+	date: "Mon Dec 23 2019 12:41:30 GMT-0300 (Argentina Standard Time)",
+	id: "692",
+	name: "Lorem Ipsum",
 	address: {
-		street: "Dolor Sit";
-		province: "Amet";
+		street: "Dolor Sit",
+		province: "Amet",
 	}
 	client_id: {
-		type: "DNI";
-		number: "12934612";
+		type: "DNI",
+		number: "12934612",
 	}
-	vatStatus: "Consumidor Final";
+	vatStatus: "Consumidor Final",
 	amount: 1900.00;
 }
 ```
