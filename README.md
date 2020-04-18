@@ -18,6 +18,8 @@ Built with TypeScript/React, TypeScript/Node and SQLite.
     <img src="demo/sqlite.png" width="240">
 </p>
 
+<br>
+
 ## Overview
 
 Quick app to display a client's earnings, expenses, savings and invoices in material design, including a CLI utility for PDF invoice parsing.
@@ -78,7 +80,7 @@ JSON object sample:
 		number: "12934612",
 	}
 	vatStatus: "Consumidor Final",
-	amount: 1900.00;
+	amount: 1900.00
 }
 ```
 
