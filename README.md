@@ -2,9 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Colorful dashboard to display financial stats for a side business.
-
-Built with TypeScript/React, TypeScript/Node and SQLite.
+Colorful dashboard to display financial stats for a side business, built with TypeScript/React, TypeScript/Node and SQLite.
 
 <br>
 
@@ -192,7 +190,7 @@ const setCustomRoutes = (app: express.Application) => {
 };
 ```
 
-The dashboard borrows from [Material UI](https://material-ui.com/) icons and components, located at `client/src/mdr`, to display data in colorful boxes, animated charts and tabbed tables.
+The dashboard borrows from [Material UI](https://material-ui.com/) icons and Material React components, to display data in colorful boxes, animated charts and tabbed tables. Material React components must be placed at `client/src/mdr` and are not included in this repo.
 
 <p align="center">
     <img src="demo/line-graph.gif">
