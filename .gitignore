@@ -5,3 +5,4 @@ data/sql/monotax_real.db
 data/sql/monotax_real.sql
 package-lock.json
 data/*.xlsx
+client/src/mdr/
