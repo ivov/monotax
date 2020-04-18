@@ -44,12 +44,6 @@ Features:
     <img src="demo/earnings.png">
 </p>
 
-## Installation
-
-1. Install [Node](https://nodejs.org/en/download/) and clone repo
-2. Install dependencies: `npm i && cd client npm i`
-3. Run server and client: `npm run both`
-
 ## Operation
 
 PDF invoices are placed at `data/pdf` and parsed with `npm run parse`. The invoices must be formatted as those issued under the monotax scheme of Argentina's Federal Administration of Public Revenue.
