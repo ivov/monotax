@@ -1,7 +1,7 @@
 node_modules
 build
-data/pdf
-data/sql/*
-!data/sql/monotax_schema.sql
+data/pdf/*.pdf
+data/sql/monotax_real.db
+data/sql/monotax_real.sql
 package-lock.json
 data/*.xlsx

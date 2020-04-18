@@ -1,12 +1,12 @@
 import express from "express";
 import cors from "cors";
-import setRoutesFromLists from "./routes/setRoutesFromLists";
+import setAutomaticRoutes from "./routes/setAutomaticRoutes";
 import setCustomRoutes from "./routes/setCustomRoutes";
 
 const app = express();
 
 app.use(cors());
-setRoutesFromLists(app);
+setAutomaticRoutes(app);
 setCustomRoutes(app);
 
 const port = process.env.PORT || 5000;

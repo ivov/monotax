@@ -1,13 +1,13 @@
 import {
-	GetListParams,
-	GetOneParams,
-	GetManyParams,
-	GetManyReferenceParams,
-	CreateParams,
-	UpdateParams,
-	UpdateManyParams,
-	DeleteParams,
-	DeleteManyParams
+	GetListParams
+	// GetOneParams,
+	// GetManyParams,
+	// GetManyReferenceParams,
+	// CreateParams,
+	// UpdateParams,
+	// UpdateManyParams,
+	// DeleteParams,
+	// DeleteManyParams
 } from "ra-core";
 import { fetchUtils } from "react-admin";
 import { stringify } from "query-string";
